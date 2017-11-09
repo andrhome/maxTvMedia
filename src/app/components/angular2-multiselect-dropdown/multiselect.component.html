@@ -1,0 +1,44 @@
+<div class="cuppa-dropdown" (clickOutside)="closeDropdown()">
+    <div class="selected-list">
+        <div class="c-btn" (click)="toggleDropdown($event)">
+            <div *ngIf="selectedItems?.length == 0" class="c-empty-text">{{settings.text}}</div>
+            <span *ngIf="settings.singleSelection">
+                <span *ngFor="let item of selectedItems;trackBy: trackByFn;">
+                    {{item.itemName}}
+                </span>
+            </span>
+            <div class="c-list" *ngIf="selectedItems?.length > 0 && !settings.singleSelection">
+                <div class="c-token" *ngFor="let item of selectedItems;trackBy: trackByFn;let k = index" [hidden]="k > settings.badgeShowLimit-1">
+                    <span class="c-label">{{item.itemName}}</span>
+                    <span class="fa fa-remove" (click)="onItemClick(item)"></span>
+                </div>
+            </div> 
+            <span *ngIf="selectedItems?.length > settings.badgeShowLimit">+{{selectedItems?.length - settings.badgeShowLimit }}</span>
+            <span class="fa" [ngClass]="{'fa-angle-down': !isActive,'fa-angle-up':isActive}"></span>
+        </div>
+    </div>
+    <div class="dropdown-list" [hidden]="!isActive">
+    <div class="arrow-up">
+        <div class="arrow-up__inner"></div>
+    </div>
+    <div class="list-area">
+        <div class="pure-checkbox select-all" *ngIf="settings.enableCheckAll && !settings.singleSelection && !settings.limitSelection" (click)="toggleSelectAll()">
+            <input type="checkbox" [checked]="isSelectAll" [disabled]="settings.limitSelection == selectedItems?.length"/>
+            <label>
+                <span [hidden]="isSelectAll">{{settings.selectAllText}}</span>
+                <span [hidden]="!isSelectAll">{{settings.unSelectAllText}}</span>
+            </label>
+        </div>   
+        <div class="list-filter" *ngIf="settings.enableSearchFilter">
+            <span class="fa fa-search"></span>
+            <input type="text" placeholder="Search" [(ngModel)]="filter.itemName">
+        </div> 
+    <ul [style.maxHeight] = "settings.maxHeight+'px'">
+        <li *ngFor="let item of data | listFilter:filter; let i = index;" (click)="onItemClick(item,i)" class="pure-checkbox">
+            <input type="checkbox" [checked]="isSelected(item)" [disabled]="settings.limitSelection == selectedItems?.length && !isSelected(item)"/>
+            <label>{{item.itemName}}</label>
+        </li>
+    </ul>
+    </div>
+    </div>
+</div>

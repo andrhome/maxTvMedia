@@ -1,0 +1,112 @@
+<div class="modal inmodal fade in create-modal" [ngClass]="{'show': showModal}">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" [ngClass]="{'ng-submitted': form.submitted}" autocomplete="off">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <h4 class="modal-title col-sm-8">Create {{title}}</h4>
+                        <div class="input-group-btn pull-right">
+                            <button tabindex="-1" class="btn btn-primary submit"
+                                    type="submit" [disabled]="disabledSubmit">Save</button>
+                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button"
+                                    aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a (click)="closeModal()">Cancel</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+
+                    <!--  ** Building **  -->
+                    <div class="row m-b-xs" [hidden]="inDirectoryItemView">
+                        <div class="dv-label col-sm-4 strong">Building</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <select class="form-control" [ngModel]="buildingId" name="building" required #buildingSelect
+                                    (change)="getSuitesByBuildingId($event.target.value)">
+                                <option value="" hidden></option>
+                                <option *ngFor="let build of directoryService.buildings" [value]="build.id">{{build.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--  ** Unit **  -->
+                    <div class="row m-b-xs" [hidden]="inDirectoryItemView">
+                        <div class="dv-label col-sm-4 strong">Unit</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <search-select [ngModel]="suiteId" name="suite" required
+                                           [data]="suiteToSearchSelect(suites)"></search-select>
+                            <spinner [spinnerShow]="buildingSelect.value && !suites.length"></spinner>
+                        </div>
+                    </div>
+
+                    <!-- * petTypeId * -->
+                    <div class="row m-b-xs m-t-md">
+                        <div class="dv-label col-sm-4 strong">Pet Type</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <select class="form-control" name="petTypeId" ngModel>
+                                <option value="" hidden></option>
+                                <option *ngFor="let petType of directoryService.petTypes" [value]="petType.id">
+                                    {{petType.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- * name * -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Name</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="name" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!-- * weight * -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Weight</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="weight" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!-- * height * -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Height</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="height" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!-- * breed * -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Breed</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="breed" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!-- * dateOfBirth * -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">DOB</div>
+                        <div id="dateInputBox" class="dv-value-edit col-sm-8">
+                            <datetime
+                                [ngModel]="dateOfBirth"
+                                [name]="'dateOfBirth'"
+                                (ngModelChange)="dateOfBirth = $event">
+                            </datetime>
+                        </div>
+                    </div>
+
+                    <!-- * NOTE * -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Notes</div>
+                        <div class="dv-value col-sm-8">
+                            <textarea class="form-control" name="note" ngModel maxlength="255"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-backdrop fade in" (click)="onClose(form)"></div>
+</div>

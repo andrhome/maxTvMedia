@@ -1,0 +1,40 @@
+<div *ngIf="total" class="pagination-component">
+    <div class="goto form-inline pagination-group m-b-sm">
+        <label class="pagination-label">Page</label>
+        <span class="input-group">
+            <input #customPageValue class="input form-control" min="1" max="{{pager.totalPages}}" type="number"
+                   value="{{pager.currentPage}}" (keyup.enter)="setPage(customPageValue.value)" style="width: auto;">
+            <span class="input-group-btn" style="display: table;">
+                <button (click)="setPage(customPageValue.value)" type="button" class="btn btn-white">Go</button>
+            </span>
+        </span>
+    </div>
+    <div class="btn-group pagination-group m-b-sm">
+        <button [ngClass]="{disabled: pager.currentPage == 1}" (click)="setPage(1)" class="btn btn-white">
+            First
+        </button>
+        <button [ngClass]="{disabled: pager.currentPage == 1}" type="button" class="btn btn-white"
+                (click)="setPage(pager.currentPage - 1)">
+            <i class="fa fa-chevron-left"></i>
+        </button>
+        <button *ngFor="let page of pager.pages" [ngClass]="{'active': pager.currentPage == page}"
+                class="btn btn-white" (click)="setPage(page)">
+            {{page}}
+        </button>
+        <button [ngClass]="{disabled: pager.currentPage == pager.totalPages}" class="btn btn-white"
+                (click)="setPage(pager.currentPage + 1)">
+            <i class="fa fa-chevron-right"></i>
+        </button>
+        <button [ngClass]="{disabled: pager.currentPage == pager.totalPages}"
+                (click)="setPage(pager.totalPages)" class="btn btn-white">
+            Last
+        </button>
+    </div>
+    <div class="btn-group pagination-group m-b-sm">
+        <button *ngFor="let interval of perPageIntervals" (click)="setQuantityPerPage(interval)" [disabled]="total < 15"
+                [ngClass]="{'active': perPage == interval}" type="button" class="btn btn-white">
+            {{interval}}
+        </button>
+        <label class="pagination-label">per page</label>
+    </div>
+</div>

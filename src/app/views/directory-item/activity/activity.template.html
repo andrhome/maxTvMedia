@@ -1,0 +1,114 @@
+<div class="activity-history">
+    <div class="activity-history__timeline">
+        <div class="detailed-view-header">
+            <div class="col-md-12">
+                <span *ngIf="activeTab === 'directory'">Directory Activity</span>
+                <span *ngIf="activeTab === 'parcels'"  >Parcels Activity</span>
+            </div>
+        </div>
+        <div class="timeline">
+            <ul class="timeline__list">
+                <spinner [spinnerShow]="isSpinnerShow()"></spinner>
+                <span *ngIf="isActivitiesDirectoryEmpty || isActivitiesParcelsEmpty">No activities yet.</span>
+                <li *ngFor="let a of targetActivities()">
+                    <section *ngIf="a.action !== 'ignore'">
+                        <header class="timeline__header">
+							<span>
+								<time>{{ a.loggedAt | date:'dd.MM.yyyy hh:mm a' }}</time> by {{ a.userFullName }}
+							</span>
+                        </header>
+
+                        <main class="timeline__content">
+                            <div [ngSwitch]="a.action">
+
+                                <ng-template [ngSwitchCase]="'update'">
+                                    {{ a.activityType }}
+                                    <span class="timeline__active">"{{a.name}}"</span>
+                                    <ul class="field-changes">
+                                        <li *ngFor="let item of a.data">
+                                            {{ item?.key }} :
+                                            <span class="timeline__active">"{{ item?.old }}"</span>
+                                            changed to
+                                            <span class="timeline__active">"{{ item?.new }}"</span>
+                                        </li>
+                                    </ul>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'change_phone'">
+                                    <p>
+                                        Resident
+                                        <span class="timeline__active">"{{a.extra.user}}"</span>
+                                        {{ a.data[0]?.key }}
+                                        <span class="timeline__active">"{{ a.data[0]?.old }}"</span>
+                                        changed to
+                                        <span class="timeline__active">"{{ a.data[0]?.new }}"</span>
+                                    </p>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'change_address'">
+                                    <p>
+                                        Resident
+                                        <span class="timeline__active">"{{a.extra.user}}"</span>
+                                        <span *ngFor="let item of a.data">
+                                            {{ item?.key }}
+                                            <span class="timeline__active">"{{ item?.old }}"</span>
+                                            changed to
+                                            <span class="timeline__active">"{{ item?.new }}"</span>
+                                        </span>
+
+                                    </p>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'remove_suite_user'">
+                                    <p>Resident <span class="timeline__active">"{{a.name}}"</span> was moved out</p>
+                                    <ul class="field-changes">
+                                        <li *ngFor="let item of a.data">
+                                            {{ item.key }} :
+                                            <span class="timeline__active">{{ item.value }}</span>
+                                        </li>
+                                    </ul>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'change_primary'">
+                                    The primary {{ a.activityType }} changed to
+                                    <span class="timeline__active">"{{a.name}}"</span>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'create'">
+                                    <p>
+                                        {{ a.activityType }}
+                                        <span class="timeline__active">"{{a.name}}"</span>
+                                        {{ a.originActivityType === 'parcels' ? 'was received' : 'was added'}}
+                                    </p>
+
+                                    <ul class="field-changes">
+                                        <li *ngFor="let item of a.data">
+                                            {{ item.key }} :
+                                            <span class="timeline__active">{{ item.value }}</span>
+                                        </li>
+                                    </ul>
+                                </ng-template>
+
+                                <ng-template [ngSwitchCase]="'remove'">
+                                    <p>
+                                        {{ a.activityType }}
+                                        <span class="timeline__active">"{{a.name}}"</span>
+                                        was removed
+                                    </p>
+
+                                    <ul class="field-changes">
+                                        <li *ngFor="let item of a.data">
+                                            {{ item.key }} :
+                                            <span class="timeline__active">{{ item.value }}</span>
+                                        </li>
+                                    </ul>
+                                </ng-template>
+
+                            </div>
+                        </main>
+                    </section>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

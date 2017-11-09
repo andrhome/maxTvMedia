@@ -1,0 +1,141 @@
+<div class="modal inmodal fade in create-modal" [ngClass]="{'show': showModal}">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" [ngClass]="{'ng-submitted': form.submitted}" autocomplete="off">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <h4 class="modal-title col-sm-8">Create {{title}}</h4>
+                        <div class="input-group-btn pull-right">
+                            <button tabindex="-1" class="btn btn-primary submit"
+                                    type="submit" [disabled]="disabledSubmit">Save</button>
+                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button"
+                                    aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a (click)="directoryService.hideModal()">Cancel</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+
+                    <!--  ** Building **  -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Building</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <select class="form-control" [ngModel]="buildingId" name="building"
+                                    (click)="checkFormValidity()"
+                                    required #buildingSelect>
+                                <option value="" hidden></option>
+                                <option *ngFor="let build of directoryService.buildings" [value]="build.id">{{build.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--** SUITE NUMBER ** -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Unit Number</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="suiteNumber" ngModel required maxlength="255" (input)="checkFormValidity()">
+                        </div>
+                    </div>
+
+                    <!--** Emergency Contact ** -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Emergency Contact</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="emergencyContact" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!--** Prop. Share %: ** -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Prop. Share %</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="proportionateShare" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!--** OCCUPANCY DATE ** -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Occupancy Date</div>
+                        <div id="dateInputBox" class="dv-value-edit col-sm-8">
+                            <datetime
+                                [ngModel]="occupancyDate"
+                                [name]="'occupancyDate'"
+                                (ngModelChange)="occupancyDate = $event">
+                            </datetime>
+                        </div>
+                    </div>
+
+                    <!--** Buzz ** -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Buzz</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="buzz" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!--** keyCode ** -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Key Code</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="keyCode" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!--** keyFob ** -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Key Fob</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="keyFob" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!--** POWER_ATTORNEY ** -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Power Attorney</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="powerAttorney" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!--** legalDescription ** -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Legal Description</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="legalDescription" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!--** rentedOut ** -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Rented Out</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <select class="form-control" name="rentedOut" [ngModel]="0">
+                                <option [value]="1">Yes</option>
+                                <option [value]="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--** note ** -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Notes: </div>
+                        <div class="dv-value col-sm-8">
+                            <textarea class="form-control" name="note" ngModel maxlength="255"></textarea>
+                        </div>
+                    </div>
+
+                    <!--** allowedVisitor ** -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Allowed Visitors</div>
+                        <div class="dv-value col-sm-8">
+                            <textarea class="form-control" name="allowedVisitor" ngModel maxlength="255"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-backdrop fade in" (click)="onClose(form)"></div>
+</div>

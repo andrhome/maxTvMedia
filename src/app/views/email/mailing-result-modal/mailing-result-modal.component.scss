@@ -1,0 +1,103 @@
+.mailing-result-modal {
+
+    .modal-dialog {
+        width: 1000px;
+    }
+    .modal-content {
+        padding: 10px 0;
+        position: relative;
+    }
+    .loading {
+        opacity: .8 !important;
+    }
+    .close {
+        position: absolute;
+        top: 0;
+        right: 5px;
+        z-index: 10;
+        font-size: 35px;
+    }
+    .flex {
+        display: flex;
+    }
+    .left-part {
+        border-right: 1px solid #ddd;
+        padding-right: 0;
+
+        .title {
+            font-size: 23px;
+            font-weight: normal;
+            color: #8f8f8f;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .filters-box {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+            hr { margin: 3px 10px; }
+        }
+        .filter {
+            .building-checkbox {
+                label { width: 100%; }
+                i { float: right; }
+            }
+        }
+    }
+    .right-part {
+        .head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+
+            .search-box {
+                position: relative;
+                input {
+                    width: 400px;
+                    height: 40px;
+                    border: 1px solid #ddd;
+                    padding: 10px;
+                    outline: none;
+                }
+                .fa-search, .fa-times, .fa-question-circle {
+                    position: absolute;
+                    top: 0;
+                    line-height: 40px;
+                    color: #bbb;
+                    cursor: pointer;
+                }
+                .fa-search, .fa-times {
+                    right: 10px;
+                    font-size: 16px;
+                }
+                .fa-question-circle {
+                    font-size: 24px;
+                }
+            }
+        }
+        .table-box {
+            height: 400px;
+            overflow: auto;
+
+            .table > thead > tr > th,
+            .table > tbody > tr > td {
+                padding: 5px;
+                font-size: 12px;
+                max-width: 175px;
+            }
+            .label {
+                color: #fff;
+                text-transform: capitalize;
+                font-weight: bold;
+            }
+            .label-in-progress { background: #f1971f; }
+            .label-sent { background: #1b6db2; }
+            .label-error { background: #c82737; }
+        }
+    }
+
+    .pl-for-residents { padding-left: 30px; }
+
+}

@@ -1,0 +1,88 @@
+<div class="ibox detailed-view-ibox">
+    <div class="detailed-view-header">
+        <span class="building-name">{{company.name}}</span>
+        <span class="close-detailed-view" (click)="hideDetailedView()">×</span>
+    </div>
+    <div class="detailed-view-body">
+        <div class="detailed-view__more-info">
+            <form #form="ngForm" [ngClass]="{'ng-submitted': form.submitted}">
+                <div class="row m-t-md m-b-md">
+                    <div class="col-md-4">
+                        <div class="circle-logo"><img *ngIf="theme.logo" [src]="theme.logo"></div>
+                    </div>
+                    <div class="col-md-8">
+                        <input-field
+                            name="name"
+                            [ngModel]="company.name"
+                            [class]="'strong'"
+                            (update)="update('name', form.value.name)">
+                        </input-field>
+                        <input-field
+                            name="phone"
+                            [ngModel]="company.phone"
+                            (update)="update('phone', form.value.phone)">
+                        </input-field>
+                        <input-field
+                            name="address"
+                            [ngModel]="company.address"
+                            (update)="update('address', form.value.address)">
+                        </input-field>
+                        <div class="btn-group">
+                            <a data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle m-t-sm m-b-sm">
+                                Actions <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li (click)="adm.addOffice(company.id)"><a>Add Office</a></li>
+                                <li (click)="adm.removeCompany(company.id)"><a>Delete This Company</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="radio-tabs clearfix m-b-md">
+                    <input type="radio" name="activeTab" id="offices" [value]="'offices'" [(ngModel)]="activeTab">
+                    <label class="col-md-6" for="offices">Offices</label>
+                    <input type="radio" name="activeTab" id="UI" [value]="'UI'" [(ngModel)]="activeTab">
+                    <label class="col-md-6" for="UI">User Interface</label>
+                </div>
+                <div class="tab offices" *ngIf="activeTab === 'offices'">
+                    <p class="strong" *ngIf="!company.offices.length">No offices in this company</p>
+                    <ng-template  ngFor let-office [ngForOf]="company.offices" let-i="index">
+                        <div class="row m-b-sm show-fa-in-hover">
+                            <div class="col-md-5 strong">{{office.name}}</div>
+                            <div class="col-md-5">{{formatPhone(office.phone)}}</div>
+                            <div class="col-md-2 crud-icon">
+                                <i (click)="adm.deleteOffice(office)" class="fa fa-trash pull-right" title="Delete"></i>
+                                <i (click)="adm.editOffice(office)" class="fa fa-pencil pull-right" title="Edit"></i>
+                            </div>
+                        </div>
+                        <div class="row m-b-md" *ngFor="let member of office.members">
+                            <div class="col-md-4 col-md-offset-1 strong">{{member.name}}</div>
+                            <div class="col-md-7">{{formatPhone(member.phone)}}</div>
+                        </div>
+                        <hr>
+                    </ng-template>
+                </div>
+                <div class="tab" *ngIf="activeTab === 'UI'">
+                    <div class="square-logo"><img *ngIf="theme.logo" [src]="theme.logo"></div>
+                    <select-field
+                        [ngModel]="company.theme"
+                        name="theme"
+                        [title]="'COLOR THEME'"
+                        [optionTitleKey]="'name'"
+                        [data]="adm.allThemes"
+                        (update)="update('theme', form.value.theme)">
+                    </select-field>
+                    <hr>
+                    <div class="m-b-xs">
+                        <div class="color-view" [style.background]="theme.colors.body"></div>
+                        <span class="strong">Background color</span>
+                    </div>
+                    <div class="m-b-xs">
+                        <div class="color-view" [style.background]="theme.colors.primary"></div>
+                        <span class="strong">Primary color</span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

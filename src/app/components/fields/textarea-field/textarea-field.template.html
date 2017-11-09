@@ -1,0 +1,30 @@
+<div class="row m-b-xs" (dblclick)="editModeOn()">
+    <div *ngIf="title" class="dv-label col-sm-3 strong" data-toggle="tooltip" data-placement="top"
+         [title]="tooltipText">
+        {{ title }}
+    </div>
+
+    <div *ngIf="!editOnly" class="dv-value" [ngClass]="{'hidden': isEditMode, 'col-sm-9': title, 'col-sm-12': !title}">
+        <i *ngIf="iconClass" [class]="iconClass" class="m-r-sm"></i>
+
+        <span [class]="valueClass">{{ value || '-' }}</span>
+
+        <i class="fa fa-pencil pull-right" (click)="editModeOn()"
+           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+    </div>
+
+    <div class="dv-value" [ngClass]="{'hidden': !isEditMode, 'col-sm-9': title, 'col-sm-12': !title}">
+        <textarea class="form-control" (keyup.enter)="apply()" [(ngModel)]="value" maxlength="255">{{value}}</textarea>
+
+        <div *ngIf="!editOnly" class="m-t-xs apart-btns pull-right">
+            <button type="button" class="apply" (click)="apply()">
+                <i class="fa fa-check"></i>
+            </button>
+
+            <button type="button" class="reset" (click)="cancel()">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+
+    </div>
+</div>

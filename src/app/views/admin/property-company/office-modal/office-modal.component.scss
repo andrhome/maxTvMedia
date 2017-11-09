@@ -1,0 +1,19 @@
+.modal-header .input-group-btn {
+    width: 100px;
+    .submit{
+        border-radius: 3px 0 0 3px;
+        border-right: 1px solid #ddd;
+        margin-right: 1px;
+    }
+}
+.modal-dialog {
+    width: 500px;
+    margin-top: -20%;
+    max-height: 500px;
+}
+.form-control {
+    height: 26px;
+    padding: 0 12px;
+    font-size: 13px;
+}
+

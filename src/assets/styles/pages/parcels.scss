@@ -1,0 +1,112 @@
+.mtv-parcels-page {
+    .table-responsive {
+        overflow: auto;
+        width: calc(100vw - 272px) !important;
+        height: calc(100vh - 310px);
+    }
+
+    .nav.nav-tabs li { display: none; }
+    .tabs-container .tab-pane .panel-body {
+        padding: 0;
+    }
+    .tabs-container {
+        margin-top: 25px;
+    }
+    .mainPartPage > .ibox-content {
+        padding-top: 25px;
+    }
+
+}
+
+.parcel-modal {
+    .modal-body {
+        max-height: 620px;
+    }
+    .modal-dialog { width: 450px; }
+    input, select {
+        height: 25px;
+        padding: 0 12px;
+    }
+    .parcel-type-switch {
+        border: 1px solid #1cb394;
+        border-radius: 2px;
+        input { display: none; }
+        label {
+            display: block;
+            user-select: none;
+            background: #fff;
+            color: #1cb394;
+            padding: 5px;
+            text-align: center;
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+        input:checked + label {
+            background: #1cb394;
+            color: #fff;
+        }
+    }
+    .submit-btn {
+        width: 250px; height: 40px;
+    }
+    .input-group-addon {
+        padding: 3px 12px;
+        max-width: 38px;
+    }
+
+    textarea { min-height: 55px; }
+
+    @media (max-height: 730px) {
+        .modal-body { max-height: 80vh; }
+    }
+
+}
+
+.create-edit-parcel-modal {
+    .modal-body { padding-bottom: 0; }
+
+    .form-control__parcel-type {
+        text-transform: capitalize;
+    }
+}
+
+.parcel-history-modal {
+
+    .modal-dialog {
+        margin-top: -100px;
+    }
+    .modal-body {
+        padding: 0;
+        max-height: none;
+    }
+    .timeline__list:before {
+        bottom: 50px;
+    }
+    p.description {
+        font-size: 12px; color: gray;
+    }
+    .timeline__header {
+        line-height: 10px;
+        margin-bottom: 5px;
+    }
+    .timeline__list > li:last-child:after {
+        content: '';
+        position: absolute;
+        top: 5px;
+        width: 1px;
+        background: #fff;
+        height: 100%;
+        left: 0;
+        z-index: 5;
+    }
+    .notes {
+        font-size: 11px;
+        color: gray;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+}
+
+.mini-navbar .mtv-parcels-page {
+    .table-responsive { width: calc(100vw - 120px) !important; }
+}

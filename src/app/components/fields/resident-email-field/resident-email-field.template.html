@@ -1,0 +1,30 @@
+<div class="row m-b-xs" (dblclick)="editModeOn()">
+    <div *ngIf="title" class="dv-label col-sm-3 strong" data-toggle="tooltip" data-placement="top"
+         [title]="tooltipText">
+        {{ title }}
+    </div>
+
+    <div *ngIf="!editOnly" class="dv-value" [ngClass]="{'hidden': isEditMode, 'col-sm-9': title, 'col-sm-12': !title}">
+        <i *ngIf="icon" [ngClass]="icon" class="m-r-sm"></i>
+
+        <span [class]="valueClass">{{ value || '-' }}</span>
+
+        <i class="fa fa-pencil pull-right" (click)="editModeOn()"
+           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+    </div>
+
+    <div class="dv-value-edit" [ngClass]="{'hidden': !isEditMode, 'col-sm-9': title, 'col-sm-12': !title}">
+        <i *ngIf="icon" [ngClass]="icon" class="m-r-sm"> </i>
+
+        <input #emailField (keyup.enter)="apply(emailField)" [(ngModel)]="value" class="form-control" type="email" maxlength="255"
+        pattern="[a-z0-9._%+-_]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+
+        <button *ngIf="!editOnly" type="button" (click)="apply(emailField)">
+            <i class="fa fa-check"></i>
+        </button>
+
+        <button *ngIf="!editOnly" type="button" (click)="cancel()">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+</div>

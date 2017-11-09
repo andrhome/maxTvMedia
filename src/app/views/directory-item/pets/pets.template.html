@@ -1,0 +1,103 @@
+<div class="ibox detailed-view-ibox">
+    <div class="detailed-view-header">
+        <div class="col-sm-9">
+            <span>Pet</span>
+        </div>
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-w-m btn-primary pull-right"
+                    (click)="create()">
+                <i class="fa fa-plus-circle"></i> Add Pet
+            </button>
+        </div>
+    </div>
+
+    <div class="detailed-view-body">
+        <div class="detailed-view__more-info m-t-md">
+            <form *ngIf="data"
+                  #form="ngForm"
+                  (ngSubmit)="update(form)"
+                  [ngClass]="{'ng-submitted': form.submitted}"
+                  autocomplete="off">
+                <select-field
+                    [ngModel]="data.petType"
+                    name="petType"
+                    [title]="'Pet Type'"
+                    [optionTitleKey]="'name'"
+                    [data]="petsList"
+                    (update)="update({petType: form.value.petType})">
+                </select-field>
+
+                <input-field
+                    [ngModel]="data.name"
+                    name="name"
+                    [required]="true"
+                    [title]="'Name'"
+                    (update)="update({name: form.value.name});
+                    updateNameInList('petsList', data.id, 'name',form.value.name)">
+                </input-field>
+
+                <input-field
+                    [ngModel]="data.weight"
+                    name="weight"
+                    [title]="'Weight'"
+                    (update)="update({weight: form.value.weight})">
+                </input-field>
+
+                <input-field
+                    [ngModel]="data.height"
+                    name="height"
+                    [title]="'Height'"
+                    (update)="update({height: form.value.height})">
+                </input-field>
+
+                <input-field
+                    [ngModel]="data.breed"
+                    name="breed"
+                    [title]="'Breed'"
+                    (update)="update({breed: form.value.breed})">
+                </input-field>
+
+                <datetime-field
+                    ngModel
+                    name="dateOfBirth"
+                    [title]="'DOB'"
+                    [value]="data.dateOfBirth"
+                    [classLabel]="'dv-label col-sm-3 strong'"
+                    [classValueBox]="'dv-value col-sm-9'"
+                    [classValueEditBox]="'dv-value-edit col-sm-9'"
+                    (update)="update({dateOfBirth: form.value.dateOfBirth})">
+                </datetime-field>
+
+                <textarea-field
+                    [ngModel]="data.note"
+                    [value]="data.note"
+                    name="note"
+                    [title]="'Notes'"
+                    (update)="update({note: form.value.note})">
+                </textarea-field>
+
+                <div class="btn-group" *ngIf="data.id">
+                    <a data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle">
+                        Actions <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a (click)="remove()">Delete</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="boxForModal" *ngIf="isCreateModal && parent.suiteData">
+    <pet-create
+        [closeTrigger]="hideModal"
+        (onPopupClose)="hideModal()"
+        [buildingId]="parent.suiteData.building.id"
+        [suiteId]="parent.suiteData.id"
+        [inDirectoryItemView]="true"
+    ></pet-create>
+</div>

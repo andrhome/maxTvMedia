@@ -1,0 +1,16 @@
+<div class="tabs-container">
+    <div class="box" [class.scrollMode]="scrollMode">
+        <i class="fa fa-angle-left tab-arrow" (click)="moveRight()"></i>
+        <div class="nav-tabs-wrap">
+            <ul class="nav nav-tabs" [style.transform]="offsetStyle">
+                <li *ngFor="let tab of tabs" [ngClass]="{'active': isActiveTab(tab.tabId) }" (click)="selectTab(tab)">
+                    <a>{{tab.title}}</a>
+                </li>
+            </ul>
+        </div>
+        <i class="fa fa-angle-right tab-arrow" (click)="moveLeft()"></i>
+    </div>
+    <div class="tab-content">
+        <ng-content></ng-content>
+    </div>
+</div>

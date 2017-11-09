@@ -1,0 +1,21 @@
+.create-folder-modal {
+    .modal-dialog {
+        max-width: 550px;
+    }
+    .close {
+        font-size: 35px;
+        position: absolute;
+        right: 10px;
+        top: 3px;
+    }
+    .modal-body {
+        position: relative;
+        padding: 30px;
+    }
+    .btns-box{
+        text-align: center;
+    }
+    .save-folder-btn{
+        width: 200px;
+    }
+}

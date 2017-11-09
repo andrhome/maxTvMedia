@@ -1,0 +1,37 @@
+<div class="wrapper wrapper-content mtv-email-merge-page row">
+    <div class="ibox mainPartPage">
+        <div class="ibox-content">
+            <div class="row">
+
+                <div class="col-sm-7">
+                    <filter [tabHeading]="'Email Merge'" [buildings]="es.buildings"></filter>
+                </div>
+
+                <emails-status-filter></emails-status-filter>
+
+                <div class="col-sm-3">
+                    <a class="btn btn-w-m btn-primary pull-right" [routerLink]="['/email-merge/compose']">
+                        <i class="fa fa-plus-circle"></i> Compose Email
+                    </a>
+                </div>
+
+            </div>
+            <tabs-wrapper>
+
+                <tab-item [ngClass]="{'sk-loading': es.spinnerShow}">
+                    <email-list></email-list>
+                </tab-item>
+
+                <pagination *ngIf="es.data.total && es.urlService.queryParams['page']"
+                            [total]="es.data.total"></pagination>
+
+                <spinner [spinnerShow]="es.spinnerShow"></spinner>
+
+            </tabs-wrapper>
+        </div>
+    </div>
+</div>
+
+<email-view-modal      *ngIf="es.isEmailViewModalShow"></email-view-modal>
+<mailing-result-modal  *ngIf="es.isMailingResultModalShow"></mailing-result-modal>
+<view-attachment-modal *ngIf="es.isViewAttachmentModalShow"></view-attachment-modal>

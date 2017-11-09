@@ -1,0 +1,36 @@
+<div class="table-responsive" [class.overflow-hidden]="es.emptyRowService.emptyRow.length > 0">
+    <table class="table table-striped table-hover email-list-table footable" *ngIf="es.data.entities.length">
+        <thead>
+            <tr>
+                <th (click)="orderBy('subject', $event)"        >Subject   <span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('pmName', $event)"         >Created By<span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('createdAt', $event)" class="footable-sorted-desc">Created On<span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('status', $event)"         >Status    <span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('recipientsCount', $event)">Recipient <span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('sentCount', $event)"      >Sent      <span class="footable-sort-indicator"></span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of es.data.entities" [ngClass]="{'footable-odd': (index % 2 === 0)}">
+                <td>
+                    <span class="clickable-text mtv-primary-color" (click)="showEmailViewModal(item)">{{item.subject}}</span>
+                </td>
+                <td>{{item.pmName}}</td>
+                <td>{{item.createdAt | date:"dd.MM.yyyy"}}</td>
+                <td>
+                    <span *ngIf="item.status === 'in_progress'" class="text-uppercase label label-in-progress">in progress</span>
+                    <span *ngIf="item.status === 'completed'"   class="text-uppercase label label-completed">completed</span>
+                    <span *ngIf="item.status === 'draft'"       class="text-uppercase label label-draft">draft</span>
+                </td>
+                <td>
+                    <span class="clickable-text mtv-primary-color" (click)="es.showMailingResultModal(item)">{{item.recipientsCount}}</span>
+                </td>
+                <td>{{item.sentCount}}</td>
+            </tr>
+            <tr *ngFor="let item of es.emptyRowService.emptyRow" class="empty-row">
+                <td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 *ngIf="es.data.total == 0" class="text-center">Result Not Found</h2>
+</div>

@@ -1,0 +1,43 @@
+.email-view-modal {
+    .modal-dialog {
+        width: 700px;
+    }
+    .close {
+        font-size: 35px;
+        position: absolute;
+        right: 10px;
+        top: 3px;
+    }
+    .modal-body {
+        position: relative;
+        padding: 30px 50px;
+    }
+    .subject {
+        font-weight: bold;
+        font-size: 20px;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+    }
+    .email-message {
+        max-height: 300px;
+        overflow: auto;
+        word-wrap: break-word;
+    }
+    .increased-text {
+        font-size: 16px;
+    }
+    .attachments {
+        height: 35px;
+        border-bottom: 1px solid #ddd;
+        color: inherit;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &:hover {
+            color: #333;
+        }
+    }
+    .file-size { color: #bbb; }
+    .btns-box button { width: 120px; }
+}

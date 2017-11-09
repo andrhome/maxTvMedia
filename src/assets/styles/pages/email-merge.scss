@@ -1,0 +1,34 @@
+.mtv-email-merge-page {
+    .table-responsive {
+        overflow: auto;
+        width: calc(100vw - 272px) !important;
+        height: calc(100vh - 310px);
+    }
+
+    .nav.nav-tabs li { display: none; }
+    .tabs-container .tab-pane .panel-body {
+        padding: 0;
+    }
+    .tabs-container {
+        margin-top: 25px;
+    }
+    .mainPartPage > .ibox-content {
+        padding-top: 25px;
+    }
+
+    [data-original-title="Video"] { display: none; }
+
+}
+
+.mini-navbar .mtv-email-merge-page {
+    .table-responsive{  width: calc(100vw - 120px) !important; }
+}
+
+
+
+.email-placeholders-btn {
+    display: inline-block;
+    .dropdown-menu.pull-right {
+        right: -135px;
+    }
+}

@@ -1,0 +1,146 @@
+<div class="modal inmodal fade in parcel-modal parcel-transit-modal" [ngClass]="{'show': showModal}">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" [ngClass]="{'ng-submitted': form.submitted}">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="hideModal()">
+                        <span>×</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 *ngIf="action === 'pick_up'"  class="modal-title">Parcel Pick Up</h4>
+                    <h4 *ngIf="action === 'return'"   class="modal-title">Parcel Return</h4>
+                    <h4 *ngIf="action === 'cancel'"   class="modal-title">Parcel Cancellation</h4>
+                    <p>{{parcel.suiteNumber}} - {{parcel.buildingName}}</p>
+                </div>
+                <div class="modal-body">
+
+                    <table class="table table-striped table-hover" *ngIf="data.length">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label class="img-checkbox" (click)="toggleCheckedAll()">
+                                        <input type="checkbox" [checked]="isCheckedAll()">
+                                        <label><svg-checked></svg-checked></label>
+                                    </label>
+                                </th>
+                                <th>ID</th>
+                                <th>Resident Name</th>
+                                <th>Received</th>
+                                <th>Pieces</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of data" (click)="item.checked = !item.checked">
+                                <td>
+                                    <label class="img-checkbox">
+                                        <input type="checkbox" name="parcel_{{ item.id }}" [checked]="item.checked">
+                                        <label><svg-checked></svg-checked></label>
+                                    </label>
+                                </td>
+                                <td>{{item.parcelNumber}}</td>
+                                <td>{{item.residentFullName}}</td>
+                                <td>{{item.createdAt | date:"dd.MM.yyyy" }}</td>
+                                <td>{{item.numberPieces}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row m-b-xs p-sm">
+
+                        <!--pick_up ----->
+                        <div class="row" *ngIf="action === 'pick_up'">
+                            <label class="col-sm-4 m-t-xs">Picked up by: </label>
+                            <div class="col-sm-8" *ngIf="parcel.isIncomingParcel()">
+                                <select class="form-control" [ngModel]="parcel.residentId"
+                                        name="residentId" required #residentSelect>
+                                    <option value="" hidden></option>
+                                    <option *ngFor="let resident of residents" [value]="resident.id">
+                                        {{resident.fullName}}
+                                    </option>
+                                    <option [value]="0">Other</option>
+                                </select>
+                                <input *ngIf="residentSelect.value == '0'" class="form-control"
+                                       placeholder="Other Resident Name" [ngModel]="parcel.residentFullName"
+                                       name="otherResident" maxlength="255" required>
+                            </div>
+                            <div class="col-sm-8" *ngIf="parcel.isOutgoingParcel()">
+                                <select class="form-control" name="pickedUpByPostService" required
+                                        [ngModel]="parcel.parcelPostServiceId || parcelsService.postServices[0].id">
+                                    <option value="" hidden></option>
+                                    <option *ngFor="let postService of parcelsService.postServices" [value]="postService.id">
+                                        {{postService.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!--return ---->
+                        <div class="row" *ngIf="action === 'return'">
+                            <label class="col-sm-4 m-t-xs">Returning by: </label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="returningBy" required
+                                        [ngModel]="parcel.parcelPostServiceId || parcelsService.postServices[0].id">
+                                    <option value="" hidden></option>
+                                    <option *ngFor="let postService of parcelsService.postServices" [value]="postService.id">
+                                        {{postService.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!--cancellation ----->
+                        <div class="row" *ngIf="action === 'cancel'">
+                            <label class="col-sm-4 m-t-xs">Cancelled By: </label>
+                            <div class="col-sm-8">
+                                <select class="form-control" [ngModel]="parcel.residentId"
+                                        name="residentId" required #residentSelect>
+                                    <option value="" hidden></option>
+                                    <option *ngFor="let resident of residents" [value]="resident.id">
+                                        {{resident.fullName}}
+                                    </option>
+                                    <option [value]="0">Other</option>
+                                </select>
+                                <input *ngIf="residentSelect.value == '0'" class="form-control"
+                                       placeholder="Other Resident Name" [ngModel]="parcel.residentFullName"
+                                       name="otherResident" maxlength="255" required>
+                            </div>
+                        </div>
+
+                        <div class="row m-t-md m-b-md">
+                            <div class="col-sm-4">
+                                <div class="input-radio" onclick="setTimeout(onSign, 500);">
+                                    <input id="with-sign" type="radio" class="i-checks" name="sign" ngModel [value]="1">
+                                    <label for="with-sign">Signature</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-8" *ngIf="form.value.sign == 1">
+                                <div class="signature">
+                                    <a class="mtv-primary-color" onclick="onClear()">Clear</a>
+                                    <canvas id="cnv" name="cnv"></canvas>
+                                    <input type=hidden id="bioSigData" #bioSigData>
+                                    <input type=hidden id="sigImgData">
+                                    <textarea id="sigStringData" hidden></textarea>
+                                </div>
+                                <div *ngIf="bioSigData.value">Signature received from device</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="input-radio">
+                                    <input id="without-sign" type="radio" class="i-checks"
+                                           name="sign" [ngModel]="0" [value]="0">
+                                    <label for="without-sign">Save Without Signature</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-center m-b-md">
+                    <button type="submit" class="btn btn-primary submit-btn"
+                            [disabled]="!isSomeChecked() || disabledSubmit">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-backdrop fade in" (click)="hideModal()"></div>
+</div>

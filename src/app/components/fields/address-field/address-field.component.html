@@ -1,0 +1,109 @@
+<div *ngIf="!value.length" class="row m-b-xs addressBlock" (dblclick)="addNew()">
+    <div class="dv-label col-sm-3 strong">Addresses</div>
+
+    <div class="dv-value col-sm-9">
+        <span>-</span>
+        <i class="icon-plus pull-right" (click)="addNew()"
+           data-toggle="tooltip" data-placement="top" title="Add New Address"></i>
+    </div>
+</div>
+
+<form #form="ngForm" (ngSubmit)="apply(form)">
+    <div class="row m-b-xs addressBlock" (dblclick)="editModeOn()" *ngFor="let item of value; let i = index;">
+        <div class="dv-label col-sm-3 strong">
+            Address
+        </div>
+
+        <div class="dv-value col-sm-9" [class.hidden]="isEditMode">
+		<span style="width: 80%; display: inline-block;">
+            {{item.address }}{{
+            item.city ? ', ' + item.city : '' }}{{
+            item.postalCode ? ', ' + item.postalCode : '' }}{{
+            item.state ? ', ' + item.state : '' }}{{
+            item.country ? ', ' + getCountryNameById(item.country) : '' }}
+		</span>
+
+            <i class="fa fa-trash pull-right" (click)="delete_(i)" data-toggle="tooltip" data-placement="top"
+               title="Delete"></i>
+            <i class="fa fa-pencil pull-right" (click)="editModeOn()" data-toggle="tooltip"
+               data-placement="top" title="Edit"></i>
+        </div>
+
+        <div class="dv-value-edit col-sm-9" [class.hidden]="!isEditMode"
+             style="flex-wrap: wrap; justify-content: space-between;">
+            <div class="full-width m-b-xs">
+                <input type="radio"
+                       (click)="updatePrimary(i)"
+                       [(ngModel)]="primaryIndex"
+                       [value]="i"
+                       id="primary-address-{{i}}"
+                       name="primary-address">
+                <label class="detailed-view__label" for="primary-address-{{i}}"> Primary</label>
+            </div>
+
+            <div class="half-block m-b-xs">
+                <select (change)="updateCountry($event.target.value, i)"
+                        class="form-control"
+                        [ngModel]="item.country"
+                        name="country[{{i}}]" id="country[{{i}}]">
+                    <option value="" hidden></option>
+                    <option *ngFor="let country of directoryService.countries" [value]="country.id">
+                        {{country.countryName}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="half-block m-b-xs">
+                <input class="form-control"
+                       placeholder="Province/State"
+                       [(ngModel)]="item.state"
+                       name="state[{{i}}]"
+                       id="state[{{i}}]"
+                       maxlength="255">
+            </div>
+
+            <div class="half-block m-b-xs">
+                <input class="form-control"
+                       placeholder="City"
+                       [(ngModel)]="item.city"
+                       name="city[{{i}}]"
+                       id="city[{{i}}]"
+                       maxlength="255">
+            </div>
+
+            <div class="half-block m-b-xs">
+                <input class="form-control"
+                       placeholder="Postal Code/Zip Code"
+                       [(ngModel)]="item.postalCode"
+                       name="postalCode[{{i}}]"
+                       id="postalCode[{{i}}]"
+                       maxlength="255">
+            </div>
+
+            <div class="full-width m-b-xs">
+                <input [ngClass]="{'invalid-field': isFormInvalid && !form.value['address['+ i +']']}"
+                       class="form-control"
+                       placeholder="Address"
+                       [(ngModel)]="item.address"
+                       name="address[{{ i }}]"
+                       id="address[{{ i }}]"
+                       pattern="^[^ ][\D\d]*"
+                       maxlength="255"
+                       required>
+            </div>
+
+            <div class="m-b-xs apart-btns">
+                <button type="submit" class="apply"><i class="fa fa-check"></i></button>
+                <button type="button" class="reset" (click)="cancel()"><i
+                    class="fa fa-times"></i></button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div *ngIf="value.length" class="row">
+    <div class="col-sm-12">
+        <i class="icon-plus pull-right" (click)="addNew()" id="add-new-address"
+           data-toggle="tooltip" data-placement="top" title="Add New Address"></i>
+    </div>
+</div>

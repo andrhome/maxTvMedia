@@ -1,0 +1,39 @@
+<div class="row m-b-xs" (dblclick)="!noEdit && editModeOn()">
+    <div *ngIf="title" class="dv-label col-sm-3 strong" data-toggle="tooltip" data-placement="top"
+         [title]="tooltipText">
+        {{ title }}
+    </div>
+
+    <div *ngIf="!editOnly" class="dv-value col-sm-12"
+         [ngClass]="{'hidden': isEditMode, 'col-sm-9': title, 'col-sm-12': !title}">
+        <span *ngIf="value == 'owner_off'" class="label owner-off-label">Owner Off-Site</span>
+        <span *ngIf="value == 'owner_on'" class="label owner-on-label">Owner On-Site</span>
+        <span *ngIf="value == 'rent'" class="label rent-label">Tenant</span>
+        <span *ngIf="value == 'unknown'" class="label label-default">Not Set</span>
+
+        <ng-template *ngIf="!noEdit">
+            <i (click)="editModeOn()" class="fa fa-pencil pull-right" data-toggle="tooltip" data-placement="top"
+               title="Edit"></i>
+        </ng-template>
+    </div>
+
+    <ng-template *ngIf="!noEdit">
+        <div class="dv-value-edit col-sm-12"
+             [ngClass]="{'hidden': !isEditMode, 'col-sm-9': title, 'col-sm-12': !title}">
+            <select (keyup.enter)="apply()" class="form-control" [(ngModel)]="value">
+                <option [value]="'unknown'">Not Set</option>
+                <option [value]="'rent'">Tenant</option>
+                <option [value]="'owner_off'">Owner Off-site</option>
+                <option [value]="'owner_on'">Owner On-site</option>
+            </select>
+
+            <button *ngIf="!editOnly" (click)="apply()" type="button">
+                <i class="fa fa-check"></i>
+            </button>
+
+            <button *ngIf="!editOnly" (click)="cancel()" type="button">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </ng-template>
+</div>

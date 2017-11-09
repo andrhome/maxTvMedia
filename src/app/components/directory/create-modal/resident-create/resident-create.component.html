@@ -1,0 +1,242 @@
+<div class="modal inmodal fade in create-modal" [ngClass]="{'show': showModal}">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" [ngClass]="{'ng-submitted': form.submitted}" autocomplete="off">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <h4 class="modal-title col-sm-8">Create {{title}}</h4>
+                        <div class="input-group-btn pull-right">
+                            <button tabindex="-1" class="btn btn-primary submit"
+                                    type="submit" [disabled]="disabledSubmit">Save</button>
+                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button"
+                                    aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a (click)="closeModal()">Cancel</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+
+                    <!--  ** Building **  -->
+                    <div class="row m-b-xs" [hidden]="inDirectoryItemView">
+                        <div class="dv-label col-sm-3 strong">Building</div>
+                        <div class="dv-value-edit col-sm-9">
+                            <select class="form-control" [ngModel]="buildingId" name="building"
+                                    (change)="getSuitesByBuildingId($event.target.value)"
+                                    required #buildingSelect>
+                                <option value="" hidden></option>
+                                <option *ngFor="let build of directoryService.buildings" [value]="build.id">
+                                    {{build.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--  ** Unit **  -->
+                    <div class="row m-b-xs" [hidden]="inDirectoryItemView">
+                        <div class="dv-label col-sm-3 strong">Unit</div>
+                        <div class="dv-value-edit col-sm-9">
+                            <search-select [ngModel]="suiteId" name="suite" required
+                                           [data]="suiteToSearchSelect(suites)"></search-select>
+                            <spinner [spinnerShow]="buildingSelect.value && !suites.length"></spinner>
+                        </div>
+                    </div>
+
+                    <!--  ** ROLE **  -->
+                    <div class="row m-b-xs m-t-md">
+                        <div class="dv-label col-sm-3 strong">Occupant Type</div>
+                        <div class="dv-value-edit col-sm-9">
+                            <select class="form-control" [ngModel]="'unknown'" name="role">
+                                <option [value]="'unknown'">Not Set</option>
+                                <option [value]="'rent'">Tenant</option>
+                                <option [value]="'owner_off'">Owner Off-Site</option>
+                                <option [value]="'owner_on'">Owner On-Site</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--  ** FULLNAME **  -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-3 strong">Full Name</div>
+                        <div class="dv-value-edit col-sm-9">
+                            <input class="form-control" name="fullName" ngModel required maxlength="255">
+                        </div>
+                    </div>
+
+                    <!--  ** EMAIL **  -->
+                    <div class="row m-b-md">
+                        <div class="dv-label col-sm-3 strong">Email</div>
+                        <div class="dv-value-edit col-sm-9">
+                            <input class="form-control" ngModel name="email" maxlength="255"
+                                   pattern="^[0-9a-zA-Z_\.\-\+]+@[0-9a-zA-Z_.-]+?\.[0-9a-zA-Z]{2,3}$">
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!--PHONES-->
+                    <div class="row m-b-xs m-t-xs" *ngFor="let phoneBlock of data.phones; let i = index;">
+
+                        <div class="dv-value-edit col-sm-12">
+                            <select class="form-control" [ngModel]="phoneBlock.phoneType"
+                                    name="phone_type[{{i}}]"
+                                    id="phone_type[{{i}}]"
+                                    style="width: 100px; min-width: 100px;">
+                                <option value="" hidden></option>
+                                <option *ngFor="let phoneType of phoneTypes" [value]="phoneType.type">
+                                    {{phoneType.label}}
+                                </option>
+                            </select>
+                            <div class="primary-radio">
+                                <input type="radio" value="phone[{{i}}]" name="isPrimaryPhone"
+                                       id="isPrimaryPhone[{{i}}]" [(ngModel)]="primaryPhone">
+                                <label class="detailed-view__label" for="isPrimaryPhone[{{i}}]"> Primary</label>
+                            </div>
+                            <input class="form-control" ngModel name="phone[{{i}}]"
+                                   id="phone[{{i}}]" maxlength="255"
+                                   (focusout)="phoneInputFocusout($event.target.value, i)"
+                            >
+
+                            <button type="button" (click)="deletePhone(i)"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <i class="icon-plus pull-right" (click)="addNewPhone()" id="add-new-phone"
+                               data-toggle="tooltip" data-placement="top" title="Add New Phone"></i>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!--ADDRESS-->
+                    <div class="row m-b-xs addressBlock" *ngFor="let addressBlock of data.addresses; let i = index;">
+
+                        <div class="dv-label col-sm-3 strong">Address</div>
+
+                        <div class="dv-value-edit col-sm-9 m-t-xs" style="flex-wrap: wrap; justify-content: space-between;">
+                            <div class="full-width m-b-xs primary-radio">
+                                <input type="radio"
+                                       id="isPrimaryAddress[{{i}}]" value="address[{{i}}]"
+                                       [(ngModel)]="primaryAddress"
+                                       name="isPrimaryAddress">
+                                <label class="detailed-view__label" for="isPrimaryAddress[{{i}}]"> Primary</label>
+                            </div>
+
+                            <div class="half-block m-b-xs">
+                                <select class="form-control" ngModel name="country[{{i}}]" id="country[{{i}}]">
+                                    <option value="" hidden></option>
+                                    <option *ngFor="let country of directoryService.countries" [value]="country.id">
+                                        {{country.countryName}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="half-block m-b-xs">
+                                <input class="form-control" placeholder="Province/State"
+                                       ngModel name="state[{{i}}]" id="state[{{i}}]" maxlength="255">
+                            </div>
+                            <div class="half-block m-b-xs">
+                                <input class="form-control" placeholder="City"
+                                       ngModel name="city[{{i}}]" id="city[{{i}}]" maxlength="255">
+                            </div>
+                            <div class="half-block m-b-xs">
+                                <input class="form-control" placeholder="Postal Code/Zip Code"
+                                       ngModel name="postalCode[{{i}}]" id="postalCode[{{i}}]" maxlength="255">
+                            </div>
+                            <div class="full-width m-b-xs">
+                                <input class="form-control" placeholder="Address"
+                                       ngModel name="address[{{i}}]" id="address[{{i}}]" maxlength="255">
+                            </div>
+
+                            <div class="m-b-xs apart-btns">
+                                <button type="button" class="reset" (click)="deleteAddress(i)"><i
+                                    class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <i class="icon-plus pull-right" (click)="addNewAddress()" id="add-new-address"
+                               data-toggle="tooltip" data-placement="top" title="Add New Address"></i>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!--  ** DATE OF BIRTH **  -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-3 strong">DOB</div>
+                        <div id="dateInputBox" class="dv-value-edit col-sm-9">
+                            <datetime
+                                [ngModel]="dateOfBirth"
+                                [name]="'dateOfBirth'"
+                                (ngModelChange)="dateOfBirth = $event">
+                            </datetime>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!--GROUPS-->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-3 strong">Groups</div>
+                        <div class="dv-value col-sm-9">
+                            <angular2-multiselect [data]="directoryService.groups" [(ngModel)]="selectedGroup" name="groups"
+                                                  [settings]="multiselectSettings"></angular2-multiselect>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!--  ** Waiver Signed **  -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Email Waiver Signed</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <select class="form-control" name="emailWaiverSigned" [ngModel]="0">
+                                <option [value]="1">Yes</option>
+                                <option [value]="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Parcel Waiver Signed</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <select class="form-control" name="parcelWaiverSigned" [ngModel]="0">
+                                <option [value]="1">Yes</option>
+                                <option [value]="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Key Waiver Signed</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <select class="form-control" name="keyWaiverSigned" [ngModel]="0">
+                                <option [value]="1">Yes</option>
+                                <option [value]="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+
+                    <!--  ** EMERGENCY CONTACT **  -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong" data-toggle="tooltip" data-placement="top"
+                             title="Emergency Contact">Emergency Contact
+                        </div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="emergencyContact" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!--  ** EMERGENCY ASSISTANT NOTES **  -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong" data-toggle="tooltip" data-placement="top"
+                             title="Emergency Assistant Notes">Emergency Notes
+                        </div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="emergencyAssistantNotes" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-backdrop fade in" (click)="onClose(form)"></div>
+</div>

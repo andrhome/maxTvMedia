@@ -1,0 +1,70 @@
+.circle-logo {
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    overflow: hidden;
+    padding: 10px;
+    width: 100px;
+    height: 100px;
+    img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.radio-tabs {
+    border: 1px solid #1cb394;
+    border-radius: 2px;
+    input { display: none; }
+    label {
+        display: block;
+        user-select: none;
+        background: #fff;
+        color: #1cb394;
+        padding: 5px;
+        text-align: center;
+        margin-bottom: 0;
+        cursor: pointer;
+    }
+    input:checked + label {
+        background: #1cb394;
+        color: #fff;
+    }
+}
+
+.color-view {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 15px;
+}
+
+.square-logo {
+    height: 100px;
+    border: 1px solid #ddd;
+    width: auto;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 20px;
+
+    img {
+        width: auto;
+        height: 100%;
+    }
+}
+
+.show-fa-in-hover {
+    .fa { opacity: 0; }
+    &:hover .fa { opacity: 1; }
+}
+
+.tab.offices {
+    div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.crud-icon{
+    padding-left: 0;
+}

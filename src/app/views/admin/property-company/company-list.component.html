@@ -1,0 +1,75 @@
+<div class="wrapper wrapper-content mtv-property-company-page row">
+    <div class="ibox mainPartPage"
+         [class.showDetailedView]="adm.isShowCompanyDetailedView"
+         [ngStyle]="{width: adm.isShowCompanyDetailedView ? 'calc(100% - 420px)' : '100%'}">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-7">
+                    <filter [tabHeading]="'Management Company'"></filter>
+                </div>
+                <div class="col-sm-5">
+                    <button type="button" class="btn btn-w-m btn-primary pull-right"
+                            (click)="adm.isShowCompanyModal = true">
+                        <i class="fa fa-plus-circle"></i> New Management Company
+                    </button>
+                </div>
+            </div>
+            
+            <div class="table-responsive" [class.overflow-hidden]="adm.emptyRowService.emptyRow.length > 0"
+                 *ngIf="adm.companiesTotal !== null"
+            >
+                <table class="table table-striped table-hover footable" *ngIf="adm.companies.length">
+                    <thead>
+                    <tr [ngClass]="{'noSort': adm.companies.length < 2}">
+                        <th></th>
+                        <th (click)="adm.urlService.orderBy('id', $event)"
+                            class="footable-sorted">ID<span class="footable-sort-indicator"></span></th>
+                        <th (click)="adm.urlService.orderBy('name', $event)">Company Name<span class="footable-sort-indicator"></span></th>
+                        <th *ngIf="!adm.isShowCompanyDetailedView">Primary Contact</th>
+                        <th (click)="adm.urlService.orderBy('address', $event)">Address<span class="footable-sort-indicator"></span></th>
+                        <th (click)="adm.urlService.orderBy('phone', $event)"  >Phone #<span class="footable-sort-indicator"></span></th>
+                        <th (click)="adm.urlService.orderBy('email', $event)"  >Email  <span class="footable-sort-indicator"></span></th>
+                        <th *ngIf="!adm.isShowCompanyDetailedView"># of Properties</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ng-template ngFor let-item [ngForOf]="adm.companies" let-index="index">
+                        <tr [ngClass]="{'footable-odd': (index % 2 === 0)}" (click)="adm.toggleCheckCompany(item)">
+                            <td>
+                                <label class="img-checkbox">
+                                    <input type="checkbox" [ngModel]="item.checked">
+                                    <label><svg-checked></svg-checked></label>
+                                </label>
+                            </td>
+                            <td>{{item.id}}</td>
+                            <td>{{item.name}}</td>
+                            <td *ngIf="!adm.isShowCompanyDetailedView"> - </td>
+                            <td>{{item.address}}</td>
+                            <td>{{formatPhone(item.phone)}}</td>
+                            <td>{{item.email}}</td>
+                            <td *ngIf="!adm.isShowCompanyDetailedView"> - </td>
+                        </tr>
+                    </ng-template>
+                    <tr *ngFor="let item of adm.emptyRowService.emptyRow" style="cursor: default;">
+                        <td>&nbsp;</td><td></td><td *ngIf="!adm.isShowCompanyDetailedView"></td><td></td><td></td><td></td>
+                        <td *ngIf="!adm.isShowCompanyDetailedView"></td><td></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h2 *ngIf="adm.companiesTotal === 0" class="text-center">Result Not Found</h2>
+            </div>
+
+            <pagination *ngIf="adm.companiesTotal && adm.urlService.queryParams['page']" [total]="adm.companiesTotal"></pagination>
+            <spinner [spinnerShow]="adm.spinnerShow"></spinner>
+
+        </div>
+    </div>
+
+    <div class="animated animated-directory slideInRight detailed-view dv-sidebar"
+         *ngIf="adm.isShowCompanyDetailedView">
+        <company-view></company-view>
+    </div>
+</div>
+
+<company-modal *ngIf="adm.isShowCompanyModal"></company-modal>
+<office-modal *ngIf="adm.isShowOfficeModal"></office-modal>

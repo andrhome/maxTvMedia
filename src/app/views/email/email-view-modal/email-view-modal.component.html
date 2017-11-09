@@ -1,0 +1,51 @@
+<div class="modal inmodal fade in email-view-modal" [ngClass]="{'show': showModal}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" (click)="hideModal()">
+                    <span>×</span><span class="sr-only">Close</span>
+                </button>
+
+                <p class="subject" [attr.mail-id]="data.id">{{data.subject}}</p>
+
+                <div class="row m-b-sm increased-text">
+                    <div class="col-sm-2">From:</div>
+                    <div class="col-sm-10">{{data.sender}}</div>
+                </div>
+
+                <div class="row m-b-sm">
+                    <div class="col-sm-2 increased-text m-t-sm">To:</div>
+                    <div class="col-sm-10">
+                        <recipients-filter-view [recipientFilterState]="recipientFilterState" [inViewModal]="true"></recipients-filter-view>
+                    </div>
+                </div>
+
+                <div class="row m-b-md increased-text">
+                    <div class="col-sm-2">Sent On:</div>
+                    <div class="col-sm-10">{{data.createdAt | date:"dd.MM.yyyy 'at' hh:mm a"}}</div>
+                </div>
+
+                <div class="email-message m-b-md" [innerHTML]="data.message"></div>
+
+                <p class="attachments-title strong increased-text" *ngIf="data.attachments.length">Attachments</p>
+
+                <a *ngFor="let item of data.attachments" class="attachments" (click)="es.showAttachment(item)">
+                    <div>
+                        <span class="file-name">{{item.name}}</span>
+                        <span class="file-size">({{+(item.fileSize/1000).toFixed(0)}}kb)</span>
+                    </div>
+                    <i class="fa fa-search"></i>
+                </a>
+
+                <div class="btns-box">
+                    <button class="btn btn-default-green m-t-md" (click)="createCopy()">Create a Copy</button>
+
+                    <button class="btn btn-primary m-t-md m-l-md" *ngIf="data.status === 'draft'"
+                            (click)="send()" [disabled]="disabledSubmit">Send</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade in" (click)="hideModal()"></div>
+</div>

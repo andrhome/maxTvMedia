@@ -1,0 +1,104 @@
+.mtv-themes-page {
+    margin-bottom: 0;
+    th {
+        white-space: nowrap;
+        cursor: pointer;
+        i:before {
+            padding: 10px;
+            top: -3px;
+            position: relative;
+        }
+    }
+    tr {
+        .input-group { opacity: 0; }
+
+        &:nth-last-child(0) .dropdown-menu { top: -500%; }
+        &:nth-last-child(1) .dropdown-menu { top: -500%; }
+        &:nth-last-child(2) .dropdown-menu { top: -500%; }
+        &:nth-last-child(3) .dropdown-menu { top: -500%; }
+        &:nth-last-child(4) .dropdown-menu { top: -500%; }
+
+        .dropdown-menu {
+            min-width: 100px;
+
+            & > li > a {
+                padding: 3px 13px;
+                line-height: 15px;
+            }
+        }
+
+        &:hover .input-group { opacity: 1; }
+    }
+    td { vertical-align: middle; }
+    td.td-action-btn, td.hint-td { overflow: visible; }
+
+}
+
+.table-responsive {
+    overflow: auto;
+    width: calc(100vw - 272px) !important;
+    height: calc(100vh - 280px);
+    border: 1px solid #e7eaec;
+    margin-top: 20px;
+}
+
+.btn-in-table {
+    width: 100%;
+    .btn {
+        color: #1cb394;
+        border: 1px solid #1cb394;
+    }
+}
+
+.hint-td {
+    position: relative;
+    .hint {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: -50px;
+        width: 300px;
+        background: #fff;
+        box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+        z-index: 1;
+        padding: 10px;
+        white-space: normal;
+        font-size: 11px;
+
+        &:before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 60px;
+            margin-left: -5px;
+            width: 10px;
+            height: 10px;
+            border: 10px solid transparent;
+            border-bottom: 10px solid #fff;
+        }
+
+        &.up {
+            top: 0;
+            transform: translateY(-100%);
+            &:before {
+                top: 100%;
+                border: 10px solid transparent;
+                border-top: 10px solid #fff;
+            }
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+    &.active .hint { display: block; }
+
+    .color-view {
+        width: 25px;
+        height: 25px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 15px;
+    }
+}

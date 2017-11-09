@@ -1,0 +1,53 @@
+<div class="modal inmodal fade in create-folder-modal" [ngClass]="{'show': showCreateModal}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="hideCreateFolderModal()">
+                    <span>×</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Create Folder</h4>
+            </div>
+            <div class="modal-body">
+                <form action="#">
+                    <div class="row m-b-sm">
+                        <div class="col-md-4">
+                            <label>Parent Folder</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-control" required>
+                                <option value="" hidden></option>
+                                <option>Folder</option>
+                                <option>Folder</option>
+                                <option>Folder</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-md-4">
+                            <label>Folder Name</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-md-4">
+                            <label>Access</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-control" required>
+                                <option>All</option>
+                                <option>Tenant</option>
+                                <option>Tenant</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="btns-box m-t-md">
+                        <button class="btn btn-primary save-folder-btn m-t-md">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade in" (click)="hideCreateFolderModal()"></div>
+</div>

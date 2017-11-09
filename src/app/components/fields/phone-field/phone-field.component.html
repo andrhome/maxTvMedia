@@ -1,0 +1,63 @@
+<div *ngIf="!value.length" (dblclick)="addNew()" class="row m-b-xs">
+    <div class="dv-label col-sm-3 strong">Phones</div>
+
+    <div class="dv-value col-sm-9">
+        <span>-</span>
+        <i (click)="addNew()" class="icon-plus pull-right" data-placement="top" title="Add New Phone"></i>
+    </div>
+</div>
+
+<div (dblclick)="editModeOn()" class="row m-b-xs"
+     *ngFor="let item of value; let i = index;">
+
+    <div class="dv-label col-sm-3 strong" [class.hidden]="isEditMode">
+        {{getPhoneTypeLabel(item.phoneType)}}
+    </div>
+
+    <div class="dv-value col-sm-9" [class.hidden]="isEditMode">
+        <span>{{getPhone(item) || '-'}}</span>
+
+        <i (click)="delete(i)" class="fa fa-trash pull-right" data-toggle="tooltip" data-placement="top"
+           title="Delete"></i>
+        <i (click)="editModeOn()" class="fa fa-pencil pull-right" data-toggle="tooltip" data-placement="top"
+           title="Edit"></i>
+    </div>
+
+    <div class="dv-value-edit dv-phone-block col-sm-12" [class.hidden]="!isEditMode">
+        <select (change)="updateType($event.target.value, i)" [ngModel]="item.phoneType" class="form-control"
+                name="phone_type[{{i}}]" id="phone_type[{{i}}]">
+            <option value="" hidden></option>
+            <option *ngFor="let type of phoneTypes" [value]="type.type">
+                {{type.label}}
+            </option>
+        </select>
+
+        <div class="radio-box">
+            <input type="radio"
+                   name="primary-phone"
+                   [checked]="getPrimaryIndex() === i"
+                   (click)="updatePrimary(i)"
+                   [value]="i"
+                   id="primary-phone-{{i}}">
+            <label for="primary-phone-{{i}}"> Primary</label>
+        </div>
+
+        <input (keyup.enter)="apply()" class="form-control phoneInput"
+               [ngModel]="preparePhoneForInput(item)"
+               name="phone[{{i}}]"
+               id="phone[{{i}}]"
+               maxlength="255"
+               pattern="[0-9]+"
+               (input)="updatePhone($event.target.value, i)">
+
+        <button type="button" (click)="apply()"><i class="fa fa-check"></i></button>
+        <button type="button" (click)="cancel()"><i class="fa fa-times"></i></button>
+    </div>
+</div>
+
+<div *ngIf="value.length" class="row">
+    <div class="col-sm-12">
+        <i class="icon-plus pull-right" (click)="addNew()" id="add-new-phone"
+           data-toggle="tooltip" data-placement="top" title="Add New Phone"></i>
+    </div>
+</div>

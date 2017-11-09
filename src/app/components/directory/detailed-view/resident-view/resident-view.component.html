@@ -1,0 +1,152 @@
+<div class="ibox detailed-view-ibox" *ngIf="directoryService.showDetailedView && data">
+    <div class="detailed-view-header">
+        <a *ngIf="data.suiteNumber" [routerLink]="['/directory/item/' + data.suiteId + '/residents/']">
+            <span class="suite-name m-r-sm mtv-primary-color">{{data.suiteNumber}}</span>
+        </a>
+        <span class="building-name">{{data.buildingName || 'Create' + title}}</span>
+        <span class="close-detailed-view" (click)="directoryService.toggleDetailedView(null, false)">×</span>
+    </div>
+    <div class="detailed-view-body">
+        <div class="detailed-view__more-info m-t-md">
+            <form #form="ngForm"
+                  [ngClass]="{'ng-submitted': form.submitted}"
+                  autocomplete="off">
+                <input type="hidden" name="id" [ngModel]="data.suiteUserId">
+
+                <!--  ** ROLE **  -->
+                <role-field
+                    name="role"
+                    [ngModel]="data.role"
+                    (update)="onSubmit({role: form.value.role})">
+                </role-field>
+
+                <!--  ** FULLNAME **  -->
+                <input-field
+                    name="fullName"
+                    [ngModel]="data.fullName"
+                    [class]="'strong full-name-field'"
+                    (update)="onSubmit({fullName: form.value.fullName})">
+                </input-field>
+
+                <!--  ** PRIMARY PHONE **  -->
+                <div *ngIf="getPrimaryPhone(phoneField.value)">
+					<div class="row" *ngIf="getPrimaryPhone((form.dirty)?form.value.phones:data.phones)">
+						<div class="dv-value col-sm-12">
+							<i class="fa fa-phone  m-r-sm"> </i>
+							<span> {{ getPrimaryPhone(phoneField.value) }} </span>
+						</div>
+					</div>
+                </div>
+
+                <!--  ** EMAIL **  -->
+                <resident-email-field
+                    name="email"
+                    [icon]="'fa fa-envelope'"
+                    [ngModel]="data.email"
+                    (update)="onSubmit({email: form.value.email})">
+                </resident-email-field>
+
+                <div class="btn-group" *ngIf="data.id">
+                    <a data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle">
+                        Actions <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a (click)="remove(data.suiteUserId)">Move Out</a></li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <!--PHONES-->
+                <phone-field
+                    #phoneField
+                    name="phones"
+                    [ngModel]="data.phones"
+                    [userId]="data.id"
+                    (update)="onSubmit({phones: form.value.phones})"
+                    (reset)="resetPhones($event)">
+                </phone-field>
+                <hr>
+
+                <!--ADDRESS-->
+                <address-field
+                    name="addresses"
+                    [ngModel]="data.addresses"
+                    [value]="data.addresses"
+                    [userId]="data.id"
+                    (update)="onSubmit({addresses: form.value.addresses})">
+                </address-field>
+
+                <hr>
+
+                <!--  ** DATE OF BIRTH **  -->
+                <datetime-field
+                    name="dateOfBirth"
+                    ngModel
+                    [title]="'DOB'"
+                    [value]="data.dateOfBirth"
+                    [classLabel]="'dv-label col-sm-3 strong'"
+                    [classValueBox]="'dv-value col-sm-9'"
+                    [classValueEditBox]="'dv-value-edit col-sm-9'"
+                    (update)="onSubmit({dateOfBirth: form.value.dateOfBirth})">
+                </datetime-field>
+
+                <hr>
+
+                <!--GROUPS-->
+                <groups-field
+                    name="groups"
+                    [ngModel]="data.groups"
+                    (update)="onSubmit({groups: form.value.groups})">
+                </groups-field>
+
+                <hr>
+
+                <!--  ** Waiver Signed **  -->
+                <boolean-field
+                    name="emailWaiverSigned"
+                    [title]="'Waiver Signed'"
+                    [valueTitle]="'Emails'"
+                    [ngModel]="data.emailWaiverSigned"
+                    (update)="onSubmit({emailWaiverSigned: form.value.emailWaiverSigned})">
+                </boolean-field>
+
+                <boolean-field
+                    name="parcelWaiverSigned"
+                    [title]="' '"
+                    [valueTitle]="'Parcels'"
+                    [ngModel]="data.parcelWaiverSigned"
+                    (update)="onSubmit({parcelWaiverSigned: form.value.parcelWaiverSigned})">
+                </boolean-field>
+
+                <boolean-field
+                    name="keyWaiverSigned"
+                    [title]="' '"
+                    [valueTitle]="'Keys'"
+                    [ngModel]="data.keyWaiverSigned"
+                    (update)="onSubmit({keyWaiverSigned: form.value.keyWaiverSigned})">
+                </boolean-field>
+
+                <hr>
+
+                <!--  ** EMERGENCY CONTACT **  -->
+                <input-field
+                    name="emergencyContact"
+                    [ngModel]="data.emergencyContact"
+                    [title]="'Emerg. Contact'"
+                    [tooltipText]="'Emergency Contact'"
+                    (update)="onSubmit({emergencyContact: form.value.emergencyContact})">
+                </input-field>
+
+                <!--  ** EMERGENCY ASSISTANT NOTES **  -->
+                <input-field
+                    name="emergencyAssistantNotes"
+                    [ngModel]="data.emergencyAssistantNotes"
+                    [title]="'Emerg. Notes'"
+                    [tooltipText]="'Emergency Assistant Notes'"
+                    (update)="onSubmit({emergencyAssistantNotes: form.value.emergencyAssistantNotes})">
+                </input-field>
+            </form>
+        </div>
+    </div>
+</div>

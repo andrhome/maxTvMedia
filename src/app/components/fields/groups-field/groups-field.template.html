@@ -1,0 +1,37 @@
+<div class="row m-b-xs" (dblclick)="editModeOn()">
+    <div class="dv-label col-sm-3 strong">
+        Groups
+    </div>
+
+    <div *ngIf="!editOnly" class="dv-value col-sm-9" [class.hidden]="isEditMode">
+        <span *ngFor="let group of value" class="group-label m-b-xs">
+            {{group.itemName}}
+        </span>
+
+        <span *ngIf="!value.length" class="m-b-xs">
+            -
+        </span>
+
+        <i class="fa fa-pencil pull-right" (click)="editModeOn()"
+           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+    </div>
+
+    <div class="dv-value col-sm-9" [class.hidden]="!isEditMode" style="overflow: visible;">
+        <angular2-multiselect
+            [data]="directoryService.groups"
+            [(ngModel)]="value"
+            [settings]="multiselectSettings">
+        </angular2-multiselect>
+
+        <div *ngIf="!editOnly" class="m-t-xs apart-btns pull-right">
+            <button type="button" class="apply" (click)="apply()">
+                <i class="fa fa-check"></i>
+            </button>
+
+            <button type="button" class="reset" (click)="cancel()">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
+    </div>
+</div>
+

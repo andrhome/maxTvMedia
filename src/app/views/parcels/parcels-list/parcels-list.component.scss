@@ -1,0 +1,105 @@
+.parcel-list-table {
+    margin-bottom: 0;
+    th {
+        white-space: nowrap;
+        cursor: pointer;
+        i:before {
+            padding: 10px;
+            top: -3px;
+            position: relative;
+        }
+    }
+    tr {
+        .label {
+            color: #fff;
+            text-transform: capitalize;
+            font-weight: bold;
+        }
+        .label-received { background: #f1971f; }
+        .label-canceled { background: #d1dade; }
+        .label-returned { background: #a52f2f; }
+        .label-picked_up { background: #549d62; }
+        .label-expired { background: #f36374; }
+
+        .input-group { opacity: 0; }
+
+        &:nth-last-child(0) .dropdown-menu { top: -500%; }
+        &:nth-last-child(1) .dropdown-menu { top: -500%; }
+        &:nth-last-child(2) .dropdown-menu { top: -500%; }
+        &:nth-last-child(3) .dropdown-menu { top: -500%; }
+        &:nth-last-child(4) .dropdown-menu { top: -500%; }
+
+        .dropdown-menu {
+            min-width: 100px;
+
+            & > li > a {
+                padding: 3px 13px;
+                line-height: 15px;
+            }
+        }
+
+        &:hover .input-group { opacity: 1; }
+    }
+
+    td { vertical-align: middle; }
+
+    td.td-action-btn, td.parcels-hint-td { overflow: visible; }
+
+    .parcels-hint-td {
+        position: relative;
+        .parcels-hint {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: -50px;
+            width: 300px;
+            background: #fff;
+            box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+            z-index: 1;
+            padding: 10px;
+            white-space: normal;
+            font-size: 11px;
+
+            &:before {
+                content: '';
+                position: absolute;
+                top: -20px;
+                left: 60px;
+                margin-left: -5px;
+                width: 10px;
+                height: 10px;
+                border: 10px solid transparent;
+                border-bottom: 10px solid #fff;
+            }
+
+            &.up {
+                top: 0;
+                transform: translateY(-100%);
+                &:before {
+                    top: 100%;
+                    border: 10px solid transparent;
+                    border-top: 10px solid #fff;
+                }
+            }
+
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+        &.active .parcels-hint { display: block; }
+    }
+
+    @media (max-width: 1280px) {
+        td { padding: 8px 2px; }
+    }
+
+}
+
+.btn-in-table {
+    width: 100%;
+    .btn {
+        color: #1cb394;
+        border: 1px solid #1cb394;
+    }
+}

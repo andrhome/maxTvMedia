@@ -1,0 +1,135 @@
+<div class="ibox detailed-view-ibox" *ngIf="directoryService.showDetailedView && data">
+    <div class="detailed-view-header">
+        <a *ngIf="data.suiteNumber" [routerLink]="['/directory/item/' + data.suiteId + '/pets']">
+            <span class="suite-name m-r-sm mtv-primary-color">{{data.suiteNumber}}</span>
+        </a>
+        <span class="building-name">{{data.buildingName || 'Create' + title}}</span>
+        <span class="close-detailed-view" (click)="directoryService.toggleDetailedView(null, false)">×</span>
+    </div>
+    <div class="detailed-view-body">
+        <div class="detailed-view__more-info">
+            <form #form="ngForm" [ngClass]="{'ng-submitted': form.submitted}">
+                <input type="hidden" name="id" [ngModel]="data.id">
+
+                <!-- * petTypeId * -->
+                <div class="row m-b-xs m-t-md" (dblclick)="setEditModeFor(data, 'petTypeId', true)">
+                    <div class="dv-label col-sm-4 strong">Pet Type</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.petTypeId.editMode">
+                        <span>{{directoryService.getPetTypeNameById(data.petTypeId) || '-'}}</span>
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'petTypeId', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.petTypeId.editMode">
+                        <select class="form-control" name="petTypeId" [ngModel]="data.petTypeId">
+                            <option value="" hidden></option>
+                            <option *ngFor="let petType of directoryService.petTypes" [value]="petType.id">
+                                {{petType.name}}
+                            </option>
+                        </select>
+                        <button type="button" (click)="applyChanges(data, form, 'petTypeId')"   ><i class="fa fa-check"></i></button>
+                        <button type="button" (click)="setEditModeFor(data, 'petTypeId', false)"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+
+                <!-- * name * -->
+                <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'name', true)">
+                    <div class="dv-label col-sm-4 strong">Name</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.name.editMode">
+                        <span>{{data.name || '-'}}</span>
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'name', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.name.editMode">
+                        <input class="form-control" name="name" [ngModel]="data.name" maxlength="255"
+                               (keyup.enter)="applyChanges(data, form, 'name')">
+                        <button type="button" (click)="applyChanges(data, form, 'name')"   ><i class="fa fa-check"></i></button>
+                        <button type="button" (click)="setEditModeFor(data, 'name', false)"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+
+                <!-- * weight * -->
+                <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'weight', true)">
+                    <div class="dv-label col-sm-4 strong">Weight</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.weight.editMode">
+                        <span>{{data.weight || '-'}}</span>
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'weight', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.weight.editMode">
+                        <input class="form-control" name="weight" [ngModel]="data.weight" maxlength="255"
+                               (keyup.enter)="applyChanges(data, form, 'weight')">
+                        <button type="button" (click)="applyChanges(data, form, 'weight')"   ><i class="fa fa-check"></i></button>
+                        <button type="button" (click)="setEditModeFor(data, 'weight', false)"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+
+                <!-- * height * -->
+                <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'height', true)">
+                    <div class="dv-label col-sm-4 strong">Height</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.height.editMode">
+                        <span>{{data.height || '-'}}</span>
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'height', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.height.editMode">
+                        <input class="form-control" name="height" [ngModel]="data.height" maxlength="255"
+                               (keyup.enter)="applyChanges(data, form, 'height')">
+                        <button type="button" (click)="applyChanges(data, form, 'height')"   ><i class="fa fa-check"></i></button>
+                        <button type="button" (click)="setEditModeFor(data, 'height', false)"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+
+                <!-- * breed * -->
+                <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'breed', true)">
+                    <div class="dv-label col-sm-4 strong">Breed</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.breed.editMode">
+                        <span>{{data.breed || '-'}}</span>
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'breed', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.breed.editMode">
+                        <input class="form-control" name="breed" [ngModel]="data.breed" maxlength="255"
+                               (keyup.enter)="applyChanges(data, form, 'breed')">
+                        <button type="button" (click)="applyChanges(data, form, 'breed')"   ><i class="fa fa-check"></i></button>
+                        <button type="button" (click)="setEditModeFor(data, 'breed', false)"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+
+                <!--  ** DATE OF BIRTH **  -->
+                <datetime-field
+                    ngModel
+                    name="dateOfBirth"
+                    [title]="'DOB'"
+                    [value]="data.dateOfBirth"
+                    (update)="applyChanges(data, form, 'dateOfBirth')">
+                </datetime-field>
+
+                <!-- * NOTE * -->
+                <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'note', true)">
+                    <div class="dv-label col-sm-4 strong">Notes</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.note.editMode">
+                        <span>{{data.note || '-'}}</span>
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'note', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value col-sm-8" *ngIf="data.formFields.note.editMode">
+                        <textarea class="form-control" name="note" [ngModel]="data.note" maxlength="255">{{data.note}}</textarea>
+                        <div class="m-t-xs apart-btns pull-right">
+                            <button type="button" class="apply" (click)="applyChanges(data, form, 'note')"><i class="fa fa-check"></i></button>
+                            <button type="button" class="reset" (click)="setEditModeFor(data, 'note', false)"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <a data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle m-t-sm m-b-sm">
+                        Actions <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li (click)="remove(data.id)"><a href="#">Delete This {{title}}</a></li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

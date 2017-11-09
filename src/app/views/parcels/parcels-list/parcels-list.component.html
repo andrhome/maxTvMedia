@@ -1,0 +1,127 @@
+<div class="table-responsive" [class.overflow-hidden]="parcelsService.emptyRowService.emptyRow.length > 0">
+    <table class="table table-striped table-hover parcel-list-table footable"
+           *ngIf="parcelsService.data.allParcels.data.length">
+        <thead>
+            <tr [ngClass]="{'noSort': parcelsService.data.allParcels.data.length < 2}">
+                <th (click)="orderBy('inOut', $event)"            >Type<span class="footable-sort-indicator"></span></th>
+                <th *ngIf="parcelsService.buildings.length != 1"
+                    (click)="orderBy('building.name', $event)"    >Building<span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('suite.suiteNumber', $event)">Unit<span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('parcelNumber', $event)"     >ID<span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('barCode', $event)"          >Barcode<span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('resident.fullName', $event)">Resident<span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('createdAt', $event)" class="footable-sorted-desc">Received<span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('numberPieces', $event)"     ># of Pieces<span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('status', $event)"           >Status<span class="footable-sort-indicator"></span></th>
+                <th (click)="orderBy('pickedUpAt', $event)"       >Picked Up<span class="footable-sort-indicator"></span></th>
+                <th                                               >Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-template ngFor let-item [ngForOf]="parcelsService.data.allParcels.data" let-index="index">
+                <tr [ngClass]="{'footable-odd': (index % 2 === 0)}">
+                    <td>
+                        <span *ngIf="item.isIncomingParcel()" title="Incoming">Incoming</span>
+                        <span *ngIf="item.isOutgoingParcel()" title="Outgoing">Outgoing</span>
+                    </td>
+                    <td *ngIf="parcelsService.buildings.length != 1">{{item.buildingName}}</td>
+                    <td>{{item.suiteNumber}}</td>
+                    <td class="parcels-hint-td">
+                        <span class="clickable-text mtv-primary-color" (click)="showHint($event)">{{item.parcelNumber}}</span>
+                        <div class="parcels-hint {{index > 7 ? 'up' : 'down'}}">
+                            <div class="row m-b-xs">
+                                <div class="col-sm-6 strong">Status</div>
+                                <div class="col-sm-6">
+                                    <span *ngIf="item.status === 'received'"  class="text-uppercase label label-received" >received</span>
+                                    <span *ngIf="item.status === 'canceled'"  class="text-uppercase label label-canceled" >canceled</span>
+                                    <span *ngIf="item.status === 'returned'"  class="text-uppercase label label-returned" >returned</span>
+                                    <span *ngIf="item.status === 'picked_up'" class="text-uppercase label label-picked_up">picked up</span>
+                                    <span *ngIf="item.status === 'expired'"   class="text-uppercase label label-expired"  >expired</span>
+                                </div>
+                            </div>
+                            <div class="row m-b-xs">
+                                <div class="col-sm-6 strong">Package Type</div>
+                                <div class="col-sm-6">{{item.parcelTypeName || '-'}}</div>
+                            </div>
+                            <div class="row m-b-xs">
+                                <div class="col-sm-6 strong">Pieces</div>
+                                <div class="col-sm-6">{{item.numberPieces || '-'}}</div>
+                            </div>
+                            <div class="row m-b-xs">
+                                <div class="col-sm-6 strong">Barcode</div>
+                                <div class="col-sm-6">{{item.barCode || '-'}}</div>
+                            </div>
+                            <div class="row m-b-xs">
+                                <div class="col-sm-6 strong">Notes</div>
+                                <div class="col-sm-6">{{item.description || '-'}}</div>
+                            </div>
+                            <div class="row m-b-xs">
+                                <div class="col-sm-6 strong">Courier</div>
+                                <div class="col-sm-6">{{item.pickedUpByPostServiceName || item.returningByName || item.parcelPostServiceName || '-'}}</div>
+                            </div>
+                            <div class="row m-b-xs">
+                                <div class="col-sm-6 strong">Date Received</div>
+                                <div class="col-sm-6">{{item.createdAt | date:"dd.MM.yyyy 'at' hh:mm a"}}</div>
+                            </div>
+                            <div class="row m-b-xs" *ngIf="item.pickedUpByFullName">
+                                <div class="col-sm-6 strong">Picked Up By</div>
+                                <div class="col-sm-6">{{item.pickedUpByFullName}}</div>
+                            </div>
+                            <div class="row m-b-xs" *ngIf="item.pickedUpAt">
+                                <div class="col-sm-6 strong">Date Picked Up</div>
+                                <div class="col-sm-6">{{item.pickedUpAt | date:"dd.MM.yyyy 'at' hh:mm a"}}</div>
+                            </div>
+                            <div class="row m-b-xs">
+                                <div class="col-sm-6 strong">Emailed Resident</div>
+                                <div class="col-sm-6">{{item.emailNotice ? 'Yes' : 'No'}}</div>
+                            </div>
+                            <div class="row m-b-xs" *ngIf="item.signUrl">
+                                <div class="col-sm-4 strong">Signature</div>
+                                <div class="col-sm-8"><img [src]="item.signUrl"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{item.barCode}}</td>
+                    <td>{{item.residentFullName}}</td>
+                    <td>{{item.createdAt | date:"dd.MM.yyyy"}}</td>
+                    <td>{{item.numberPieces}}</td>
+                    <td>
+                        <span *ngIf="item.status === 'received'"  class="text-uppercase label label-received" >received</span>
+                        <span *ngIf="item.status === 'canceled'"  class="text-uppercase label label-canceled" >canceled</span>
+                        <span *ngIf="item.status === 'returned'"  class="text-uppercase label label-returned" >returned</span>
+                        <span *ngIf="item.status === 'picked_up'" class="text-uppercase label label-picked_up">picked up</span>
+                        <span *ngIf="item.status === 'expired'"   class="text-uppercase label label-expired"  >expired</span>
+                    </td>
+                    <td>{{item.pickedUpAt | date:"dd.MM.yyyy"}}</td>
+                    <td class="td-action-btn">
+                        <div class="input-group">
+                            <div *ngIf="item.status === 'received'" class="input-group-btn btn-in-table">
+                                <button (click)="parcelsService.showTransitModal(item, 'pick_up')"
+                                        class="btn btn-white btn-xs">Mark Pick Up</button>
+                                <button data-toggle="dropdown" class="btn btn-white dropdown-toggle btn-xs"
+                                        aria-expanded="false"><span class="caret"></span></button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li (click)="parcelsService.showHistory(item)"><a>History</a></li>
+                                    <li (click)="parcelsService.editParcel(item)" ><a>Edit</a></li>
+                                    <li *ngIf="item.isIncomingParcel()" (click)="parcelsService.showTransitModal(item, 'return')"><a>Return</a></li>
+                                    <li *ngIf="item.isOutgoingParcel()" (click)="parcelsService.showTransitModal(item, 'cancel')"><a>Cancel</a></li>
+                                    <li (click)="parcelsService.remove(item.id)"  ><a>Delete</a></li>
+                                </ul>
+                            </div>
+
+                            <div *ngIf="item.status !== 'received'" class="input-group-btn btn-in-table">
+                                <button (click)="parcelsService.showHistory(item)" style="width: 100px;"
+                                        class="btn btn-white btn-xs" type="button">History</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <tr *ngFor="let item of parcelsService.emptyRowService.emptyRow" style="cursor: default;">
+                <td>&nbsp;</td><td *ngIf="parcelsService.buildings.length != 1"></td>
+                <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 *ngIf="parcelsService.data.allParcels.total == 0" class="text-center">Result Not Found</h2>
+</div>

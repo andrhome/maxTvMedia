@@ -1,0 +1,33 @@
+<div class="wrapper wrapper-content mtv-parcels-page row">
+    <div class="ibox mainPartPage">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-7">
+                    <filter [tabHeading]="'Parcels'" [buildings]="parcelsService.buildings"></filter>
+                </div>
+
+                <parcels-filter></parcels-filter>
+
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-w-m btn-primary pull-right"
+                            (click)="parcelsService.isParcelModalShow = true">
+                        <i class="fa fa-plus-circle"></i> New Parcel
+                    </button>
+                </div>
+
+            </div>
+            <tabs-wrapper>
+                <tab-item [tabId]="'allParcels'" [ngClass]="{'sk-loading': parcelsService.spinnerShow}">
+                    <parcels-list></parcels-list>
+                </tab-item>
+                <pagination *ngIf="parcelsService.data.allParcels.total && urlService.queryParams['page']"
+                            [total]="parcelsService.data['allParcels'].total"></pagination>
+                <spinner [spinnerShow]="parcelsService.spinnerShow"></spinner>
+            </tabs-wrapper>
+        </div>
+    </div>
+</div>
+
+<parcel-modal            *ngIf="parcelsService.isParcelModalShow"></parcel-modal>
+<transit-parcel-modal    *ngIf="parcelsService.isTransitModalShow"></transit-parcel-modal>
+<parcel-history          *ngIf="parcelsService.isParcelHistoryModalShow"></parcel-history>

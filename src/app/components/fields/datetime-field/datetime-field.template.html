@@ -1,0 +1,25 @@
+<div class="row m-b-xs" (dblclick)="editModeOn()">
+    <div *ngIf="title" [class]="classLabel">
+        {{ title }}
+    </div>
+
+    <div [class]="classValueBox" [class.hidden]="isEditMode">
+        <span>{{ value ? (value | date:"dd.MM.yyyy") : '-' }}</span>
+
+        <i class="fa fa-pencil pull-right" (click)="editModeOn()"
+           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+    </div>
+
+    <div [class]="classValueEditBox" [class.hidden]="!isEditMode">
+        <datetime [(ngModel)]="value" (keyup.enter)="apply()"></datetime>
+
+        <button type="button" (click)="apply()">
+            <i class="fa fa-check"></i>
+        </button>
+
+        <button type="button" (click)="cancel()">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+</div>
+

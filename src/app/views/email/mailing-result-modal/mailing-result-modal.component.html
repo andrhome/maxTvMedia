@@ -1,0 +1,213 @@
+<div class="modal inmodal fade in mailing-result-modal" [ngClass]="{'show': showModal}">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <button type="button" class="close" (click)="hideModal()">
+                <span>×</span><span class="sr-only">Close</span>
+            </button>
+            <div class="flex">
+                <div class="left-part col-sm-3">
+                    <div class="title">Filter Recipient List</div>
+                    <div class="filters-box">
+
+                        <div class="filter m-b-sm">
+                            <div class="img-checkbox building-checkbox">
+                                <input type="checkbox" id="statuses" [ngModel]="sf.isAllStatusChecked()"
+                                       (change)="sf.toggleCheckedAll($event.target.checked)">
+                                <label for="statuses">
+                                    <svg-checked></svg-checked>
+                                    <svg-halfchecked></svg-halfchecked>
+                                    <span>Status</span>
+                                    <i class="fa {{sf.showDropdown ? 'fa-chevron-up' : 'fa-chevron-down'}}"
+                                       (click)="sf.showDropdown = !sf.showDropdown; $event.preventDefault();"
+                                    ></i>
+                                </label>
+                            </div>
+                            <div class="filter-dropdown" *ngIf="sf.showDropdown">
+                                <div class="clearfix" *ngFor="let s of sf.statuses;">
+                                    <div class="col-sm-10">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" id="sf-{{s}}" [(ngModel)]="sf[s]">
+                                            <label for="sf-{{s}}">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                                <span>{{sf.getLabel(s)}}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 text-right">
+                                        <span>{{sf.getUsersCountByStatus(s)}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="filter m-b-sm" *ngFor="let item of data.filters; let i = index;">
+                            <div class="img-checkbox building-checkbox">
+                                <input type="checkbox" id="building-{{i}}" disabled checked
+                                       [class.halfchecked]="isBuildingHalfChecked(item)"
+                                >
+                                <label for="building-{{i}}">
+                                    <svg-checked></svg-checked>
+                                    <svg-halfchecked></svg-halfchecked>
+                                    <span>{{item.buildingName}}</span>
+                                </label>
+                            </div>
+                            <div class="filter-dropdown">
+                                <div class="clearfix" [class.hidden]="!item.tenantsChecked && !item.ownerOnChecked">
+                                    <div class="col-sm-10">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" id="b-{{i}}-residents" disabled checked
+                                                   [class.halfchecked]="isResidentHalfChecked(item)"
+                                            >
+                                            <label for="b-{{i}}-residents">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                                <span>Residents</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 text-right">
+                                        <!--<span>{{item.tenantsCount + item.ownerOnCount}}</span>-->
+                                    </div>
+                                </div>
+                                <div class="clearfix" [class.hidden]="!item.tenantsChecked || !item.tenantsCount">
+                                    <div class="col-sm-10 pl-for-residents">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" id="b-{{i}}-tenants" disabled checked
+                                                   [class.halfchecked]="item.tenantsHalfChecked"
+                                            >
+                                            <label for="b-{{i}}-tenants">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                                <span>Tenants</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 text-right">
+                                        <span>{{item.tenantsCount}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix" [class.hidden]="!item.ownerOnChecked || !item.ownerOnCount">
+                                    <div class="col-sm-10 pl-for-residents">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" id="b-{{i}}-owner-on" disabled checked
+                                                   [class.halfchecked]="item.ownerOnHalfChecked"
+                                            >
+                                            <label for="b-{{i}}-owner-on">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                                <span>Owners (On-Site)</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 text-right">
+                                        <span>{{item.ownerOnCount}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix" [class.hidden]="!item.ownerOffChecked || !item.ownerOffCount">
+                                    <div class="col-sm-10">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" id="b-{{i}}-owner-off" disabled checked
+                                                   [class.halfchecked]="item.ownerOffHalfChecked"
+                                            >
+                                            <label for="b-{{i}}-owner-off">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                                <span>Owners (Off-Site)</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 text-right">
+                                        <span>{{item.ownerOffCount}}</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix" [class.hidden]="!item.notSetChecked || !item.notSetCount">
+                                    <div class="col-sm-10">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" id="b-{{i}}-not-set" disabled checked
+                                                   [class.halfchecked]="item.notSetHalfChecked"
+                                            >
+                                            <label for="b-{{i}}-not-set">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                                <span>Not Set</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 text-right">
+                                        <span>{{item.notSetCount}}</span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="clearfix" *ngFor="let group of item.groups; let i_g = index;"
+                                     [class.hidden]="!group.count">
+                                    <div class="col-sm-10">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" id="b-{{i}}-group-{{i_g}}" disabled checked
+                                                   [class.halfchecked]="group.halfchecked"
+                                            >
+                                            <label for="b-{{i}}-group-{{i_g}}">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                                <span>{{group.name}}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 text-right">
+                                        <span>{{group.count}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-part col-sm-9">
+                    <div class="head">
+                        <div class="search-box">
+                            <input [(ngModel)]="sf.searchStr" placeholder="Search">
+                            <i class="fa fa-search" *ngIf="!sf.searchStr"></i>
+                            <i class="fa fa-times"  *ngIf="sf.searchStr" (click)="sf.searchStr = ''"></i>
+                        </div>
+                    </div>
+                    <div class="table-box">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>Unit</th>
+                                <th>Building</th>
+                                <th>Resident</th>
+                                <th>Type</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let item of sf.filterResidents(); let i = index;">
+                                <td>{{item.suiteName}}</td>
+                                <td>{{item.buildingName}}</td>
+                                <td>{{item.name}}</td>
+                                <td>
+                                    <span *ngIf="item.type=='owner_off'">Owner Off-Site</span>
+                                    <span *ngIf="item.type=='owner_on'" >Owner On-Site</span>
+                                    <span *ngIf="item.type=='rent'"     >Tenant</span>
+                                    <span *ngIf="item.type=='unknown'"  >Not Set</span>
+                                </td>
+                                <td>{{item.email}}</td>
+                                <td>
+                                    <span *ngIf="item.status === 'in_progress'" class="text-uppercase label label-in-progress">in progress</span>
+                                    <span *ngIf="item.status === 'sent'"        class="text-uppercase label label-sent"       >sent</span>
+                                    <span *ngIf="item.status === 'error'"       class="text-uppercase label label-error"      >error</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade in" (click)="hideModal()"></div>
+</div>
+

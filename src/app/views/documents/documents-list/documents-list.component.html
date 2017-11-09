@@ -1,0 +1,34 @@
+<div class="table-responsive" [class.overflow-hidden]="ds.emptyRowService.emptyRow.length > 0">
+    <table class="table table-striped table-hover documents-list-table footable" *ngIf="ds.data.entities.length">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Access</th>
+                <th>Size</th>
+                <th>Date</th>
+                <th>From</th>
+                <th></th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of ds.data.entities" [ngClass]="{'footable-odd': (index % 2 === 0)}">
+                <td>
+                    <span class="clickable-text mtv-primary-color" (click)="showDocumentViewModal(item)">{{item.name}}</span>
+                </td>
+                <td>Tenants</td>
+                <td>1.25 MB</td>
+                <td>01.01.2017 12:00</td>
+                <td>Giovana Costa</td>
+                <td>Shared</td>
+                <td>
+                    <button type="button" class="btn btn-w-m btn-default-green">View Document</button>
+                </td>
+            </tr>
+            <tr *ngFor="let item of ds.emptyRowService.emptyRow" class="empty-row">
+                <td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 *ngIf="ds.data.total == 0" class="text-center">Result Not Found</h2>
+</div>

@@ -1,0 +1,58 @@
+<div class="wrapper wrapper-content homeView">
+    <div class="scrollingBox">
+        <h1 class="m-b-lg">Hello {{authenticationService.user?.fullName}}</h1>
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Below are the latest news and updates</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link" (click)="toggleNews()">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content no-padding" id="newContent">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <p>
+                            <span class="text-info">01.11.2017</span><br>
+                            Welcome to MaxCondoClub!
+                            <br>
+                            <br>
+                            We have upgraded our look and we are ready to launch!
+                            <br>
+                            On the left side bar you will find the following: Directory, Email feature and Package Tracker.
+                            <br>
+                            <br>
+                            Over the coming months, additional features will be added. Stay Tuned!
+                        </p>
+                    </li>
+
+                    <li class="list-group-item">
+                        <p>
+                            <span class="text-info">01.11.2017</span><br>
+                            ACMO Conference
+                            <br>
+                            MaxTV Media is proud to be one of this years ACMO Sponsors!
+                            <br>
+                            <br>
+                            Please visit us at booth #710! Stop in and say hello and have a chance to win some great prizes!
+                            <br>
+                            <br>
+                            Event details:
+                            <br>
+                            Date: November 10th and 11th, 2017
+                            <br>
+                            The Toronto Congress Centre - North Building
+                            <br>
+                            650 Dixon Road, Toronto, ON M9W 1J1
+                            <br>
+                            <br>
+                            We hope to see you all there!
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

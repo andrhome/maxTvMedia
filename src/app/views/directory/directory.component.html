@@ -1,0 +1,70 @@
+<div class="wrapper wrapper-content mtv-directory-page animated fadeInRight row">
+    <div class="ibox mainPartPage"
+         [class.showDetailedView]="directoryService.showDetailedView"
+         [ngStyle]="{width: directoryService.showDetailedView ? 'calc(100% - 420px)' : '100%'}">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-9">
+                    <filter [tabHeading]="getActiveTabTitle()" [buildings]="directoryService.buildings"></filter>
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-w-m btn-primary pull-right"
+                            (click)="directoryService.showModal()"
+                    ><i class="fa fa-plus-circle"></i> Add {{getActiveTabTitle()}}
+                    </button>
+                </div>
+            </div>
+            <div [ngClass]="{'sk-loading':spinnerShow}">
+                <tabs-wrapper>
+                    <tab-item title="Residents" [tabId]="'residents'">
+                        <residents-list *ngIf="currentTabId == 'residents'"></residents-list>
+                    </tab-item>
+                    <tab-item title="Units" [tabId]="'units'">
+                        <units-list *ngIf="currentTabId == 'units'"></units-list>
+                    </tab-item>
+                    <tab-item title="Parking Spots" [tabId]="'parking-spots'">
+                        <parking-spots-list *ngIf="currentTabId == 'parking-spots'"></parking-spots-list>
+                    </tab-item>
+                    <tab-item title="Lockers" [tabId]="'lockers'">
+                        <lockers-list *ngIf="currentTabId == 'lockers'"></lockers-list>
+                    </tab-item>
+                    <tab-item title="Vehicles" [tabId]="'vehicles'">
+                        <vehicles-list *ngIf="currentTabId == 'vehicles'"></vehicles-list>
+                    </tab-item>
+                    <tab-item title="Pets" [tabId]="'pets'">
+                        <pets-list *ngIf="currentTabId == 'pets'"></pets-list>
+                    </tab-item>
+                    <tab-item title="Bike Racks" [tabId]="'bike-racks'">
+                        <bike-racks-list *ngIf="currentTabId == 'bike-racks'"></bike-racks-list>
+                    </tab-item>
+                    <pagination *ngIf="currentTabId && directoryService.directoryData[currentTabId].total
+                                           && urlService.queryParams['page']"
+                                [total]="directoryService.directoryData[currentTabId].total"></pagination>
+                    <spinner [spinnerShow]="spinnerShow"></spinner>
+                </tabs-wrapper>
+            </div>
+        </div>
+    </div>
+
+    <div class="animated animated-directory slideInRight detailed-view dv-sidebar"
+         *ngIf="directoryService.showDetailedView">
+        <resident-view      *ngIf="currentTabId == 'residents'"></resident-view>
+        <unit-view          *ngIf="currentTabId == 'units'"></unit-view>
+        <parking-spot-view  *ngIf="currentTabId == 'parking-spots'"></parking-spot-view>
+        <locker-view        *ngIf="currentTabId == 'lockers'"></locker-view>
+        <vehicle-view       *ngIf="currentTabId == 'vehicles'"></vehicle-view>
+        <pet-view           *ngIf="currentTabId == 'pets'"></pet-view>
+        <bike-rack-view     *ngIf="currentTabId == 'bike-racks'"></bike-rack-view>
+    </div>
+</div>
+
+
+<div class="boxForModal" *ngIf="directoryService.showCreateModal">
+    <resident-create     *ngIf="currentTabId == 'residents'"     ></resident-create>
+    <unit-create         *ngIf="currentTabId == 'units'"         ></unit-create>
+    <parking-spot-create *ngIf="currentTabId == 'parking-spots'" ></parking-spot-create>
+    <locker-create       *ngIf="currentTabId == 'lockers'"       ></locker-create>
+    <vehicle-create      *ngIf="currentTabId == 'vehicles'"      ></vehicle-create>
+    <pet-create          *ngIf="currentTabId == 'pets'"          ></pet-create>
+    <bike-rack-create    *ngIf="currentTabId == 'bike-racks'"    ></bike-rack-create>
+</div>

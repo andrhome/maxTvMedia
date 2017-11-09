@@ -1,0 +1,38 @@
+<div class="wrapper wrapper-content mtv-email-merge-page row">
+    <div class="ibox mainPartPage">
+        <div class="ibox-content">
+            <div class="row">
+
+                <div class="col-sm-7">
+                    <filter [tabHeading]="'Documents'" [buildings]="ds.buildings"></filter>
+                </div>
+
+                <documents-status-filter></documents-status-filter>
+
+                <div class="col-sm-3">
+                    <button class="btn btn-w-m btn-default-green pull-left" (click)="showCreateFolderModal()">
+                        <i class="fa fa-folder-open"></i> Create Folder
+                    </button>
+                    <a class="btn btn-w-m btn-primary pull-right" [routerLink]="['/']">
+                        <i class="fa fa-file-text"></i> Upload File
+                    </a>
+                </div>
+            </div>
+            <tabs-wrapper>
+
+                <tab-item [ngClass]="{'sk-loading': ds.spinnerShow}">
+                    <documents-list></documents-list>
+                </tab-item>
+
+                <pagination *ngIf="ds.data.total && ds.urlService.queryParams['page']"
+                            [total]="ds.data.total"></pagination>
+
+                <spinner [spinnerShow]="ds.spinnerShow"></spinner>
+
+            </tabs-wrapper>
+        </div>
+    </div>
+</div>
+
+<documents-view-modal *ngIf="ds.isDocumentViewModalShow"></documents-view-modal>
+<create-folder-modal *ngIf="ds.isCreateFolderModalShow"></create-folder-modal>

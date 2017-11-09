@@ -1,0 +1,129 @@
+<div class="ibox detailed-view-ibox">
+    <div class="detailed-view-header">
+        <div class="col-sm-9">
+            <span>Info</span>
+        </div>
+    </div>
+
+    <div class="detailed-view-body">
+        <div class="detailed-view__more-info m-t-md">
+            <form *ngIf="data"
+                  #form="ngForm"
+                  (ngSubmit)="update(form)"
+                  [ngClass]="{'ng-submitted': form.submitted}"
+                  autocomplete="off">
+
+                <!--** Emergency Contact  ** -->
+                <input-field
+                    [ngModel]="data.emergencyContact"
+                    name="emergencyContact"
+                    [tooltipText]="'Emergency Contact'"
+                    [title]="'Emergency Contact'"
+                    (update)="update({emergencyContact: form.value.emergencyContact})">
+                </input-field>
+
+                <!--** Prop. Share %: ** -->
+                <input-field
+                    [ngModel]="data.proportionateShare"
+                    name="proportionateShare"
+                    [tooltipText]="'Prop. Share %'"
+                    [title]="'Prop. Share %'"
+                    (update)="update({proportionateShare: form.value.proportionateShare})">
+                </input-field>
+
+                <!--** OCCUPANCY DATE ** -->
+                <datetime-field
+                    [ngModel]="data.occupancyDate"
+                    [value]="data.occupancyDate"
+                    name="occupancyDate"
+                    [title]="'Occupancy Date'"
+                    [classLabel]="'dv-label col-sm-3 strong'"
+                    [classValueBox]="'dv-value col-sm-9'"
+                    [classValueEditBox]="'dv-value-edit col-sm-9'"
+                    (update)="update({occupancyDate: form.value.occupancyDate})">
+                </datetime-field>
+
+                <!--** Buzz ** -->
+                <input-field
+                    [ngModel]="data.buzz"
+                    name="buzz"
+                    [tooltipText]="'Buzz'"
+                    [title]="'Buzz'"
+                    (update)="update({buzz: form.value.buzz})">
+                </input-field>
+
+                <!--** Key Code ** -->
+                <input-field
+                    [ngModel]="data.keyCode"
+                    name="keyCode"
+                    [tooltipText]="'Key Code'"
+                    [title]="'Key Code'"
+                    (update)="update({keyCode: form.value.keyCode})">
+                </input-field>
+
+                <!--** Key Fob ** -->
+                <input-field
+                    [ngModel]="data.keyFob"
+                    name="keyFob"
+                    [tooltipText]="'Key Fob'"
+                    [title]="'Key Fob'"
+                    (update)="update({keyFob: form.value.keyFob})">
+                </input-field>
+
+                <!--** POWER_ATTORNEY ** -->
+                <input-field
+                    [ngModel]="data.powerAttorney"
+                    name="powerAttorney"
+                    [tooltipText]="'Power Attorney'"
+                    [title]="'Power Attorney'"
+                    (update)="update({powerAttorney: form.value.powerAttorney})">
+                </input-field>
+
+                <!--** legalDescription ** -->
+                <input-field
+                    [ngModel]="data.legalDescription"
+                    name="legalDescription"
+                    [tooltipText]="'Legal Description'"
+                    [title]="'Legal Description'"
+                    (update)="update({legalDescription: form.value.legalDescription})">
+                </input-field>
+
+                <!--** RentedOut ** -->
+                <boolean-field
+                    [ngModel]="data.rentedOut"
+                    name="rentedOut"
+                    [tooltipText]="'Rented Out'"
+                    [title]="'Rented Out'"
+                    (update)="update({rentedOut: form.value.rentedOut})">
+                </boolean-field>
+
+                <div class="m-b-md m-t-md">
+                    <hr>
+                </div>
+
+                <!--** note ** -->
+                <textarea-field
+                    [ngModel]="data.note"
+                    name="note"
+                    [tooltipText]="'Note'"
+                    [title]="'Note'"
+                    (update)="update({note: form.value.note})">
+                </textarea-field>
+
+                <div class="m-b-md m-t-md">
+                    <hr>
+                </div>
+
+                <!--** Allowed visitor ** -->
+                <textarea-field
+                    [ngModel]="data.allowedVisitor"
+                    name="allowedVisitor"
+                    [tooltipText]="'Allowed Visitors'"
+                    [title]="'Allowed Visitors'"
+                    (update)="update({allowedVisitor: form.value.allowedVisitor})">
+                </textarea-field>
+
+            </form>
+        </div>
+    </div>
+</div>

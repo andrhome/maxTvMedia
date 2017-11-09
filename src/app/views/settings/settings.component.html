@@ -1,0 +1,45 @@
+<div class="wrapper wrapper-content">
+    <h1 class="m-b-lg">Settings</h1>
+
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Body background color</h5>
+                    <div id="body-bg" class="input-group colorpicker-component">
+                        <input type="text" class="form-control">
+                        <span class="input-group-addon"><i></i></span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h5>Primary color</h5>
+                    <div id="primary-color" class="input-group colorpicker-component">
+                        <input type="text" class="form-control">
+                        <span class="input-group-addon"><i></i></span>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <label class="file-input btn btn-default">
+                        <input class="hidden" type="file" id="logo-file-input" (change)="changeLogo($event)"
+                               accept="image/jpeg, image/png"
+                        >
+                        <span>Change Logo</span>
+                    </label>
+                </div>
+                <div class="col-md-2">
+                    <img class="logo-preview" [src]="logo">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-primary pull-right w-150" (click)="saveChanges()">Save changes</button>
+                    <button class="btn btn-default pull-right w-150 m-r-lg" (click)="resetToDefault()">Reset To Default</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

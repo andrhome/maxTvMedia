@@ -1,0 +1,43 @@
+<div class="loginscreen mtv-body-color">
+    <div class="login-container">
+        <div class="login-inner row">
+            <div class="col-md-6 left-col">
+                <div class="logo"></div>
+                <p class="description">
+                    Welcome to MaxCondoClub!
+                    <br>
+                    <br>
+                    Your online portal for all your Property Management needs. We are here to assist you enhance your communication with your staff and residents, while keeping track of important documents and activity of each unit.
+                    <br>
+                    <br>
+                    Stay tuned for exciting new features.
+                </p>
+            </div>
+            <div class="col-md-6 right-col">
+                <form (ngSubmit)="submit()" class="m-t">
+                    <h3>Account Login</h3>
+                    <div [ngClass]="{'has-error': isError}" class="form-group">
+                        <label>Username</label>
+                        <input [(ngModel)]="email" (input)="resetError()" type="text" name="email" class="form-control"
+                               placeholder="Email" required maxlength="255">
+                    </div>
+                    <div [ngClass]="{'has-error': isError}" class="form-group">
+                        <label><span>Password</span>
+                            <!--<a class="pull-right mtv-primary-color">Forgot password?</a>-->
+                        </label>
+                        <input [(ngModel)]="password" (input)="resetError()" type="password" name="password"
+                               class="form-control" placeholder="Password" required maxlength="255">
+                    </div>
+                    <div class="m-b-md">
+                        <label class="img-checkbox">
+                            <input id="rememberMe" type="checkbox" name="rememberMe">
+                            <label for="rememberMe"><svg-checked></svg-checked></label>
+                            <span>Remember Me</span>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

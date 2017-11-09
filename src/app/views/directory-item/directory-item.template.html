@@ -1,0 +1,154 @@
+<div class="container-fluid directory-item">
+    <div class="row directory-item__header_wrapper">
+        <header class="directory-item__header">
+            <div class="detailed-view-header">
+                <span *ngIf="suiteData" class="m-r-sm directory-item__header_unit-text">{{ suiteData.suiteNumber }}</span>
+                <span *ngIf="suiteData" class="directory-item__header_building-name-text">{{ suiteData.building.name }}</span>
+                <a [routerLink]="['/directory']" [queryParams]="{tab: directoryService.currentTabId}" class="close-detailed-view">×</a>
+            </div>
+        </header>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-4 directory-item__nav_wrapper">
+            <nav class="directory-item__nav">
+                <ul class="nav nav-pills nav-stacked item-nav">
+                    <li>
+                        <a [routerLink]="'/directory/item/' + suiteId + '/info/'"
+                           [routerLinkActive]="'item-nav__link_active'"
+                           class="item-nav__link">
+                            Info
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="'/directory/item/' + suiteId + '/residents/'"
+                           class="item-nav__link"
+                           [routerLinkActive]="'item-nav__link_active'">
+                            Residents
+                        </a>
+
+                        <ul class="item-nav__submenu" *ngIf="residentsList.length">
+                            <li class="item-nav__item_resident" *ngFor="let item of residentsList">
+                                <a [routerLink]="'/directory/item/' + suiteId + '/residents/' + item.id"
+                                   [routerLinkActive]="'item-nav__submenu-link_active'">
+                                    {{ item.fullName }}
+                                </a>
+
+                                <role-field [noEdit]="true" [ngModel]="item.suiteUser[0].role"></role-field>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a [routerLink]="'/directory/item/' + suiteId + '/parking-spots/'"
+                           class="item-nav__link"
+                           [routerLinkActive]="'item-nav__link_active'">
+                            Parking Spots
+                        </a>
+                        <ul class="item-nav__submenu" *ngIf="parkingList.length">
+                            <li *ngFor="let item of parkingList">
+                                <a [routerLink]="'/directory/item/' + suiteId + '/parking-spots/' + item.id"
+                                   [routerLinkActive]="'item-nav__submenu-link_active'">
+                                    {{ item.parkingNumber }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a [routerLink]="'/directory/item/' + suiteId + '/lockers/'"
+                           class="item-nav__link"
+                           [routerLinkActive]="'item-nav__link_active'">
+                            Lockers
+                        </a>
+
+                        <ul class="item-nav__submenu" *ngIf="lockersList.length">
+                            <li *ngFor="let item of lockersList">
+                                <a [routerLink]="'/directory/item/' + suiteId + '/lockers/' + item.id"
+                                   [routerLinkActive]="'item-nav__submenu-link_active'">
+                                    {{ item.lockerKeyCode }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a [routerLink]="'/directory/item/' + suiteId + '/vehicles/'"
+                           class="item-nav__link"
+                           [routerLinkActive]="'item-nav__link_active'">
+                            Vehicles
+                        </a>
+
+                        <ul class="item-nav__submenu" *ngIf="vehicleList.length">
+                            <li *ngFor="let item of vehicleList">
+                                <a [routerLink]="'/directory/item/' + suiteId + '/vehicles/' + item.id"
+                                   [routerLinkActive]="'item-nav__submenu-link_active'">
+                                    {{ item.licensePlate }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a [routerLink]="'/directory/item/' + suiteId + '/pets/'"
+                           class="item-nav__link"
+                           [routerLinkActive]="'item-nav__link_active'">
+                            Pets
+                        </a>
+
+                        <ul class="item-nav__submenu" *ngIf="petsList.length">
+                            <li *ngFor="let item of petsList">
+                                <a [routerLink]="'/directory/item/' + suiteId + '/pets/' + item.id"
+                                   [routerLinkActive]="'item-nav__submenu-link_active'">
+                                    {{ item.name }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a [routerLink]="'/directory/item/' + suiteId + '/bike-racks/'"
+                           class="item-nav__link"
+                           [routerLinkActive]="'item-nav__link_active'">
+                            Bike Racks
+                        </a>
+
+                        <ul class="item-nav__submenu" *ngIf="bikeRacksList.length">
+                            <li *ngFor="let item of bikeRacksList">
+                                <a [routerLink]="'/directory/item/' + suiteId + '/bike-racks/' + item.id"
+                                   [routerLinkActive]="'item-nav__submenu-link_active'">
+                                    {{ item.rackNumber }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="m-b-md">
+                        <a [routerLink]="'/directory/item/' + suiteId + '/activity'"
+                           class="item-nav__link"
+                           [routerLinkActive]="'item-nav__link_active'">
+                           Activity
+                        </a>
+
+                        <ul class="item-nav__submenu">
+                            <li>
+                                <a [routerLink]="'/directory/item/' + suiteId + '/activity/directory'"
+                                   [routerLinkActive]="'item-nav__submenu-link_active'">
+                                    Directory
+                                </a>
+                            </li>
+                            <li>
+                                <a [routerLink]="'/directory/item/' + suiteId + '/activity/parcels/'"
+                                   [routerLinkActive]="'item-nav__submenu-link_active'">
+                                    Parcels
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="col-xs-8 directory-item__content_wrapper">
+            <main class="directory-item__content">
+                <div class="directory-item__content_scroll">
+                    <router-outlet></router-outlet>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>

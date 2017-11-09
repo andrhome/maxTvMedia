@@ -1,0 +1,41 @@
+.email-list-table {
+    margin-bottom: 0;
+    th {
+        white-space: nowrap;
+        cursor: pointer;
+        i:before {
+            padding: 10px;
+            top: -3px;
+            position: relative;
+        }
+    }
+    tr {
+        .label {
+            color: #fff;
+            text-transform: capitalize;
+            font-weight: bold;
+        }
+        .label-in-progress { background: #f1971f; }
+        .label-completed { background: #549d62; }
+        .label-draft { background: #707070; }
+
+        .dropdown-menu {
+            min-width: 100px;
+            & > li > a {
+                padding: 3px 13px;
+                line-height: 15px;
+            }
+        }
+
+        &:hover .input-group { opacity: 1; }
+        &.empty-row {
+            cursor: default;
+        }
+    }
+
+    td {
+        vertical-align: middle;
+        height: 38px;
+    }
+
+}

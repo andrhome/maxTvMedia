@@ -1,0 +1,71 @@
+<div class="ibox detailed-view-ibox">
+    <div class="detailed-view-header">
+        <div class="col-sm-9"><span>Bike Rack</span></div>
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-w-m btn-primary pull-right" (click)="create()">
+                <i class="fa fa-plus-circle"></i> Add Bike Rack
+            </button>
+        </div>
+    </div>
+
+    <div class="detailed-view-body">
+        <div class="detailed-view__more-info m-t-md">
+            <form *ngIf="data"
+                  #form="ngForm"
+                  (ngSubmit)="update(form)"
+                  [ngClass]="{'ng-submitted': form.submitted}"
+                  autocomplete="off">
+                <input-field
+                    [ngModel]="data.rackNumber"
+                    name="rackNumber"
+                    [required]="true"
+                    [title]="'Rack #'"
+                    (update)="update({rackNumber: form.value.rackNumber});
+                    updateNameInList('bikeRacksList', data.id, 'rackNumber',form.value.rackNumber)">
+                </input-field>
+
+                <boolean-field
+                    name="rentedOut"
+                    [title]="'Rented Out'"
+                    [(ngModel)]="data.rentedOut"
+                    (update)="update({rentedOut: form.value.rentedOut}); resetRentedTo()">
+                </boolean-field>
+
+                <input-field
+                    *ngIf="form.value.rentedOut == 1"
+                    name="rentedTo"
+                    [title]="'Rented To'"
+                    [ngModel]="data.rentedTo"
+                    (update)="update({rentedTo: form.value.rentedTo})">
+                </input-field>
+
+                <textarea-field
+                    name="note"
+                    [title]="'Notes'"
+                    [ngModel]="data.note"
+                    (update)="update({note: form.value.note})">
+                </textarea-field>
+
+                <div class="btn-group" *ngIf="data.id">
+                    <a data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle">
+                        Actions <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a (click)="remove()">Delete</a></li>
+                    </ul>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="boxForModal" *ngIf="isCreateModal && parent.suiteData">
+    <bike-rack-create
+        [closeTrigger]="hideModal"
+        (onPopupClose)="hideModal()"
+        [buildingId]="parent.suiteData.building.id"
+        [suiteId]="parent.suiteData.id"
+        [inDirectoryItemView]="true"
+    ></bike-rack-create>
+</div>

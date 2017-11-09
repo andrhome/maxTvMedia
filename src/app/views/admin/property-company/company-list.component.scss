@@ -1,0 +1,51 @@
+.mtv-property-company-page {
+    margin-bottom: 0;
+    th {
+        white-space: nowrap;
+        cursor: pointer;
+        i:before {
+            padding: 10px;
+            top: -3px;
+            position: relative;
+        }
+    }
+    tr {
+        .input-group { opacity: 0; }
+
+        &:nth-last-child(0) .dropdown-menu { top: -500%; }
+        &:nth-last-child(1) .dropdown-menu { top: -500%; }
+        &:nth-last-child(2) .dropdown-menu { top: -500%; }
+        &:nth-last-child(3) .dropdown-menu { top: -500%; }
+        &:nth-last-child(4) .dropdown-menu { top: -500%; }
+
+        .dropdown-menu {
+            min-width: 100px;
+
+            & > li > a {
+                padding: 3px 13px;
+                line-height: 15px;
+            }
+        }
+
+        &:hover .input-group { opacity: 1; }
+    }
+    td { vertical-align: middle; }
+    td.td-action-btn, td.hint-td { overflow: visible; }
+
+}
+
+.table-responsive {
+    overflow: auto;
+    height: calc(100vh - 280px);
+    border: 1px solid #e7eaec;
+    margin-top: 20px;
+}
+
+.btn-in-table {
+    width: 100%;
+    .btn {
+        color: #1cb394;
+        border: 1px solid #1cb394;
+    }
+}
+

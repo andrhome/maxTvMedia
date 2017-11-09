@@ -1,0 +1,52 @@
+<div class="table-responsive" [class.overflow-hidden]="emptyRowService.emptyRow.length > 0">
+    <table class="table table-striped table-hover directory-list-table footable" *ngIf="data.length">
+        <thead>
+            <tr [ngClass]="{'noSort': data.length < 2}">
+                <th></th>
+                <th (click)="orderBy('suite.suiteNumber', $event)" class="footable-sorted">
+                    Unit<span class="footable-sort-indicator"></span>
+                </th>
+                <th *ngIf="directoryService.buildings.length != 1"
+                    (click)="orderBy('building.name', $event)">
+                    Building<span class="footable-sort-indicator"></span>
+                </th>
+                <th (click)="orderBy('rackNumber', $event)">
+                    Rack Number<span class="footable-sort-indicator"></span>
+                </th>
+                <th (click)="orderBy('rentedOut', $event)">
+                    Rented Out<span class="footable-sort-indicator"></span>
+                </th>
+                <th (click)="orderBy('rentedTo', $event)">
+                    Rented To<span class="footable-sort-indicator"></span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of data" (click)="toggleCheck(item)">
+                <td>
+                    <label class="img-checkbox">
+                        <input type="checkbox" [ngModel]="item.checked">
+                        <label><svg-checked></svg-checked></label>
+                    </label>
+                </td>
+                <td>{{item.suiteNumber}}</td>
+                <td *ngIf="directoryService.buildings.length != 1">{{item.buildingName}}</td>
+                <td>{{item.rackNumber}}</td>
+                <td class="with-icon">
+                    <i *ngIf="item.rentedOut" class="icon-check"></i>
+                    <i *ngIf="!item.rentedOut" class="icon-close"></i>
+                </td>
+                <td>{{item.rentedTo || '-'}}</td>
+            </tr>
+            <tr *ngFor="let item of emptyRowService.emptyRow" style="cursor: default;">
+                <td><div class="psevdo-checkbox"></div></td>
+                <td></td>
+                <td *ngIf="directoryService.buildings.length != 1"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 *ngIf="directoryService.directoryData['bike-racks'].total == 0" class="text-center">Result Not Found</h2>
+</div>

@@ -1,0 +1,11 @@
+<div class="recipients-field form-control" [class.inViewModal]="inViewModal" (click)="showChoiceRecipientsModal()">
+    <div class="recipients-block" *ngFor="let item of recipientFilterState; let i = index;"
+         [class.hidden]="!(item.tenantsCount || item.ownerOnCount || item.ownerOffCount || item.notSetCount)">
+        <span class="building strong">{{item.buildingName}}: </span>
+        <span class="recipients-group" *ngIf="item.tenantsCount" >Tenants({{  item.tenantsCount}});</span>
+        <span class="recipients-group" *ngIf="item.ownerOnCount" >Owner On({{ item.ownerOnCount}});</span>
+        <span class="recipients-group" *ngIf="item.ownerOffCount">Owner Off({{item.ownerOffCount}});</span>
+        <span class="recipients-group" *ngIf="item.notSetCount"  >Not Set({{  item.notSetCount}});</span>
+        <span class="remove-recipients-block" (click)="removeRecipientsBlock(i); $event.stopPropagation();">×</span>
+    </div>
+</div>

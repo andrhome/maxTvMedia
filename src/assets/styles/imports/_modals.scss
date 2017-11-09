@@ -1,0 +1,12 @@
+.modal {
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    &.show {
+        display: flex !important;
+    }
+
+    .modal-dialog{
+    }
+}

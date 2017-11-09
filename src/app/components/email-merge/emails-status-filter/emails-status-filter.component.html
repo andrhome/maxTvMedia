@@ -1,0 +1,30 @@
+<div class="col-sm-2 emails-status-filter">
+    <div class="parcels-filter_view-part" (click)="showDropdown = !showDropdown">Filter</div>
+    <div class="parcels-filter_dropdown" [hidden]="!showDropdown">
+        
+        <div class="m-b-xs filter-checkbox">
+            <label class="img-checkbox">
+                <input type="checkbox" id="inProgressCheckbox" #inProgressCheckbox (change)="changeFilter()">
+                <label for="inProgressCheckbox"><svg-checked></svg-checked></label>
+                <span>In Progress</span>
+            </label>
+        </div>
+
+        <div class="m-b-xs filter-checkbox">
+            <label class="img-checkbox">
+                <input type="checkbox" id="completedCheckbox" #completedCheckbox (change)="changeFilter()">
+                <label for="completedCheckbox"><svg-checked></svg-checked></label>
+                <span>Completed</span>
+            </label>
+        </div>
+
+        <div class="m-b-xs filter-checkbox">
+            <label class="img-checkbox">
+                <input type="checkbox" id="draftCheckbox" #draftCheckbox (change)="changeFilter()">
+                <label for="draftCheckbox"><svg-checked></svg-checked></label>
+                <span>Draft</span>
+            </label>
+        </div>
+
+    </div>
+</div>

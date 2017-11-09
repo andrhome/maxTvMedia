@@ -1,0 +1,179 @@
+<div class="modal inmodal fade in parcel-modal create-edit-parcel-modal" [ngClass]="{'show': showModal}">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" [ngClass]="{'ng-submitted': form.submitted}" autocomplete="off">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="hideModal()">
+                        <span>×</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">{{data.id ? 'Edit' : 'Create'}} a Parcel</h4>
+                </div>
+                <div class="modal-body">
+
+                    <!-- ___ Type / inOut ___ -->
+                    <div class="row m-b-sm">
+                        <div class="col-md-6">
+                            <label>Type</label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="parcel-type-switch clearfix">
+                                <input type="radio" name="inOut" id="incomingRadio" [value]="'Incoming'" [ngModel]="data.inOut">
+                                <label class="col-md-6" for="incomingRadio">Incoming</label>
+                                <input type="radio" name="inOut" id="outgoingRadio" [value]="'Outgoing'" [ngModel]="data.inOut">
+                                <label class="col-md-6" for="outgoingRadio">Outgoing</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ___ Building ___ -->
+                    <div class="row m-b-sm">
+                        <div class="col-md-6">
+                            <label>Building</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control" name="buildingId" [ngModel]="data.buildingId" required
+                                    (change)="changeBuilding($event.target.value)" #buildingSelect>
+                                <option value="" hidden></option>
+                                <option *ngFor="let build of parcelsService.buildings" [value]="build.id">{{build.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- ___ Unit ___ -->
+                    <div class="row m-b-sm">
+                        <div class="col-md-6">
+                            <label>Unit</label>
+                        </div>
+                        <div class="col-md-6">
+                            <search-select [ngModel]="data.suiteId" name="suiteId" required #suiteSelect
+                                           (ngModelChange)="changeUnit($event)"
+                                           [data]="suiteToSearchSelect(suites)"></search-select>
+                            <input *ngIf="suiteSelect.value == '0'" class="form-control"
+                                   [ngModel]="data.suiteNumber" name="otherSuite"
+                                   placeholder="Other Unit Number" maxlength="255" required>
+                            <spinner [spinnerShow]="buildingSelect.value && !suites.length"></spinner>
+                        </div>
+                    </div>
+
+                    <!-- ___ Resident ___ -->
+                    <div class="row m-b-sm">
+                        <div class="col-md-6">
+                            <label>Resident</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control" [ngModel]="data.residentId" name="residentId" #residentSelect required
+                                    (change)="changeResident($event.target.value)" [disabled]="!residents.length">
+                                <option value="" hidden></option>
+                                <option *ngFor="let resident of residents" [value]="resident.id">{{resident.fullName}}</option>
+                                <!--<option [value]="0">Other</option>-->
+                            </select>
+                            <input *ngIf="suiteSelect.value == '0' || residentSelect.value == '0'" class="form-control"
+                                   placeholder="Other Resident Name" [ngModel]="data.residentFullName"
+                                   name="otherResident" maxlength="255" required>
+                            <spinner [spinnerShow]="suiteSelect.value &&
+                                                    suiteSelect.value != 'null' &&
+                                                    !residents.length"></spinner>
+                        </div>
+                    </div>
+
+                    <!-- ___ Parcel Type ___ -->
+                    <div class="row m-b-sm">
+                        <div class="col-md-6">
+                            <label>Parcel Type</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control form-control__parcel-type" [ngModel]="data.parcelTypeId" name="parcelTypeId">
+                                <option value="" hidden></option>
+                                <option *ngFor="let parcelType of parcelsService.parcelTypes" [value]="parcelType.id">
+                                    {{parcelType.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- ___ # of Pieces / numberPieces ___ -->
+                    <div class="row m-b-sm">
+                        <div class="col-md-6">
+                            <label># of Pieces</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="number" min="1" class="form-control"
+                                   name="numberPieces" [ngModel]="data.numberPieces">
+                        </div>
+                    </div>
+
+                    <!-- ___ Courier / postService ___ -->
+                    <div class="row m-b-sm">
+                        <div class="col-md-6">
+                            <label>Courier</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-control" name="parcelPostServiceId" [ngModel]="data.parcelPostServiceId">
+                                <option value="" hidden></option>
+                                <option *ngFor="let postService of parcelsService.postServices" [value]="postService.id">
+                                    {{postService.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- ___ Barcode ___ -->
+                    <div class="row m-b-sm">
+                        <div class="col-md-6">
+                            <label>Barcode</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control" name="barCode" [ngModel]="data.barCode" maxlength="255">
+                        </div>
+                    </div>
+
+                    <!-- ___ Date / CreatedAt ___ -->
+                    <div class="row m-b-sm">
+                        <div class="col-md-6">
+                            <label>Date</label>
+                        </div>
+                        <div class="col-md-6">
+                            <datetime [ngModel]="date" name="date"></datetime>
+                        </div>
+                    </div>
+
+                    <!-- ___ Time / CreatedAt ___ -->
+                    <div class="row m-b-sm">
+                        <div class="col-md-6">
+                            <label>Time</label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group bootstrap-timepicker timepicker">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                <input id="timepicker1" class="form-control input-small" name="time" [ngModel]="time">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ___ Description  ___ -->
+                    <div class="row m-b-sm">
+                        <div class="col-md-4">
+                            <label>Description</label>
+                        </div>
+                        <div class="col-md-8">
+                            <textarea class="form-control"
+                                      name="description" [ngModel]="data.description" maxlength="255"></textarea>
+                        </div>
+                    </div>
+
+                    <label *ngIf="!data.id" class="img-checkbox">
+                        <input id="emailNotice" type="checkbox" name="emailNotice" [ngModel]="true">
+                        <label for="emailNotice"><svg-checked></svg-checked></label>
+                        <span>Email Notice to Resident(s)</span>
+                    </label>
+
+                    <div class="row text-center m-b-lg">
+                        <button type="submit" class="btn btn-primary submit-btn" [disabled]="disabledSubmit">Save</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-backdrop fade in" (click)="hideModal()"></div>
+</div>

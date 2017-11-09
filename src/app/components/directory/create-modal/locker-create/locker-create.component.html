@@ -1,0 +1,92 @@
+<div class="modal inmodal fade in create-modal" [ngClass]="{'show': showModal}">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" [ngClass]="{'ng-submitted': form.submitted}" autocomplete="off">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <h4 class="modal-title col-sm-8">Create {{title}}</h4>
+                        <div class="input-group-btn pull-right">
+                            <button tabindex="-1" class="btn btn-primary submit"
+                                    type="submit" [disabled]="disabledSubmit">Save</button>
+                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button"
+                                    aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a (click)="closeModal()">Cancel</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+
+                    <!--  ** Building **  -->
+                    <div class="row m-b-xs" [hidden]="inDirectoryItemView">
+                        <div class="dv-label col-sm-4 strong">Building</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <select class="form-control" [ngModel]="buildingId" name="building" required #buildingSelect
+                                    (change)="getSuitesByBuildingId($event.target.value)">
+                                <option value="" hidden></option>
+                                <option *ngFor="let build of directoryService.buildings" [value]="build.id">{{build.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--  ** Unit **  -->
+                    <div class="row m-b-xs" [hidden]="inDirectoryItemView">
+                        <div class="dv-label col-sm-4 strong">Unit</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <search-select [ngModel]="suiteId" name="suite" required
+                                           [data]="suiteToSearchSelect(suites)"></search-select>
+                            <spinner [spinnerShow]="buildingSelect.value && !suites.length"></spinner>
+                        </div>
+                    </div>
+
+                    <!-- * lockerKeyCode/Locker Spot * -->
+                    <div class="row m-b-xs m-t-md">
+                        <div class="dv-label col-sm-4 strong">Locker Spot</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="lockerKeyCode" ngModel required maxlength="255">
+                        </div>
+                    </div>
+
+                    <!-- * legalDescription * -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Legal Description</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="legalDescription" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!-- * rentedOut * -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Rented Out</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <select class="form-control" name="rentedOut" [ngModel]="0" #rentedOutSelect>
+                                <option [value]="1">Yes</option>
+                                <option [value]="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--  ** Rented To **  -->
+                    <div class="row m-b-xs" *ngIf="rentedOutSelect.value == 1">
+                        <div class="dv-label col-sm-4 strong">Rented To</div>
+                        <div class="dv-value-edit col-sm-8">
+                            <input class="form-control" name="rentedTo" ngModel maxlength="255">
+                        </div>
+                    </div>
+
+                    <!-- * NOTE * -->
+                    <div class="row m-b-xs">
+                        <div class="dv-label col-sm-4 strong">Notes</div>
+                        <div class="dv-value col-sm-8">
+                            <textarea class="form-control" name="note" ngModel maxlength="255"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-backdrop fade in" (click)="onClose(form)"></div>
+</div>
+

@@ -1,0 +1,164 @@
+<div class="ibox detailed-view-ibox" *ngIf="directoryService.showDetailedView && data">
+    <div class="detailed-view-header">
+        <a *ngIf="data.suiteNumber" [routerLink]="['/directory/item/' + data.suiteId + '/vehicles']">
+			<span class="suite-name m-r-sm mtv-primary-color">{{data.suiteNumber}}</span>
+        </a>
+        <span class="building-name">{{data.buildingName || 'Create' + title}}</span>
+        <span class="close-detailed-view" (click)="directoryService.toggleDetailedView(null, false)">×</span>
+    </div>
+    <div class="detailed-view-body">
+        <div class="detailed-view__more-info">
+            <form #form="ngForm" [ngClass]="{'ng-submitted': form.submitted}">
+                <input type="hidden" name="id" [ngModel]="data.id">
+
+                <!--** Car Owner ** -->
+                <div class="row m-b-xs m-t-md" (dblclick)="setEditModeFor(data, 'ownerId', true)">
+                    <div class="dv-label col-sm-4 strong">Car Owner</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.ownerId.editMode">
+                        <span *ngIf="data.ownerId">{{getResidentFullNameById(data.ownerId) || '-'}}</span>
+
+                        <span *ngIf="!data.ownerId && data.ownerName">{{ data.ownerName || '-' }}</span>
+
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'ownerId', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.ownerId.editMode">
+                        <select class="form-control" name="ownerId" [ngModel]="data.ownerId || 0"
+                                [disabled]="!residents.length">
+                            <option value="" hidden></option>
+                            <option *ngFor="let resident of residents" [value]="resident.id">{{resident.fullName}}
+                            </option>
+                        </select>
+
+                        <button *ngIf="form.value.ownerId != 0" type="button"
+                                (click)="applyChanges(data, form, 'ownerId')"><i class="fa fa-check"></i></button>
+                        <button *ngIf="form.value.ownerId == 0" type="button"
+                                (click)="applyChanges(data, form, 'customOwnerName')"><i class="fa fa-check"></i>
+                        </button>
+
+                        <button type="button" (click)="setEditModeFor(data, 'ownerId', false)"><i
+                            class="fa fa-times"></i></button>
+                    </div>
+
+                    <div *ngIf="form.value.ownerId == 0" class="dv-value-edit col-sm-8 col-sm-offset-4"
+                         [class.hidden]="!data.formFields.ownerId.editMode">
+                        <input class="form-control" type="text" name="customOwnerName" [ngModel]="data.ownerName"
+                               placeholder="Car Owner" (keyup.enter)="applyChanges(data, form, 'customOwnerName')">
+                    </div>
+                </div>
+
+                <!--** LICENSE PLATE ** -->
+                <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'licensePlate', true)">
+                    <div class="dv-label col-sm-4 strong">License Plate #</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.licensePlate.editMode">
+                        <span>{{data.licensePlate || '-'}}</span>
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'licensePlate', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.licensePlate.editMode">
+                        <input class="form-control" name="licensePlate" [ngModel]="data.licensePlate" required
+                               maxlength="255" (keyup.enter)="applyChanges(data, form, 'licensePlate')">
+                        <button type="button" (click)="applyChanges(data, form, 'licensePlate')"><i
+                            class="fa fa-check"></i></button>
+                        <button type="button" (click)="setEditModeFor(data, 'licensePlate', false)"><i
+                            class="fa fa-times"></i></button>
+                    </div>
+                </div>
+
+                <!--** BRAND ** -->
+                <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'brand', true)">
+                    <div class="dv-label col-sm-4 strong">Make</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.brand.editMode">
+                        <span>{{data.brand || '-'}}</span>
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'brand', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.brand.editMode">
+                        <input class="form-control" name="brand" [ngModel]="data.brand" maxlength="255"
+                               (keyup.enter)="applyChanges(data, form, 'brand')">
+                        <button type="button" (click)="applyChanges(data, form, 'brand')"><i class="fa fa-check"></i>
+                        </button>
+                        <button type="button" (click)="setEditModeFor(data, 'brand', false)"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!--** MODEL ** -->
+                <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'model', true)">
+                    <div class="dv-label col-sm-4 strong">Model</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.model.editMode">
+                        <span>{{data.model || '-'}}</span>
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'model', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.model.editMode">
+                        <input class="form-control" name="model" [ngModel]="data.model" maxlength="255"
+                               (keyup.enter)="applyChanges(data, form, 'model')">
+                        <button type="button" (click)="applyChanges(data, form, 'model')"><i class="fa fa-check"></i></button>
+                        <button type="button" (click)="setEditModeFor(data, 'model', false)"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+
+                <!--** YEAR ** -->
+                <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'year', true)">
+                    <div class="dv-label col-sm-4 strong">Year</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.year.editMode">
+                        <span>{{data.year || '-'}}</span>
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'year', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.year.editMode">
+                        <input class="form-control" name="year" [ngModel]="data.year" maxlength="255"
+                               (keyup.enter)="applyChanges(data, form, 'year')">
+                        <button type="button" (click)="applyChanges(data, form, 'year')"><i class="fa fa-check"></i></button>
+                        <button type="button" (click)="setEditModeFor(data, 'year', false)"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+
+                <!--** COLOR ** -->
+                <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'color', true)">
+                    <div class="dv-label col-sm-4 strong">Color</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.color.editMode">
+                        <span>{{data.color || '-'}}</span>
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'color', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.color.editMode">
+                        <input class="form-control" name="color" [ngModel]="data.color" maxlength="255"
+                               (keyup.enter)="applyChanges(data, form, 'color')">
+                        <button type="button" (click)="applyChanges(data, form, 'color')"><i class="fa fa-check"></i></button>
+                        <button type="button" (click)="setEditModeFor(data, 'color', false)"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+
+                <!--** NOTE ** -->
+                <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'note', true)">
+                    <div class="dv-label col-sm-4 strong">Notes</div>
+                    <div class="dv-value col-sm-8" *ngIf="!data.formFields.note.editMode">
+                        <span>{{data.note || '-'}}</span>
+                        <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'note', true)"
+                           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                    </div>
+                    <div class="dv-value col-sm-8" *ngIf="data.formFields.note.editMode">
+                        <textarea class="form-control" name="note" [ngModel]="data.note" maxlength="255">{{data.note}}</textarea>
+                        <div class="m-t-xs apart-btns pull-right">
+                            <button type="button" class="apply" (click)="applyChanges(data, form, 'note')"><i
+                                class="fa fa-check"></i></button>
+                            <button type="button" class="reset" (click)="setEditModeFor(data, 'note', false)"><i
+                                class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group" *ngIf="data.id">
+                    <a data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle m-t-sm m-b-sm">
+                        Actions <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li (click)="remove(data.id)"><a href="#">Delete This {{title}}</a></li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+.tab-arrow {
+    display: none;
+    width: 20px;
+    font-size: 30px;
+    line-height: 40px;
+    cursor: pointer;
+    color: #a7b1c2;
+
+    &:hover { color: #555; }
+}
+
+.nav-tabs-wrap {
+    width: 100%;
+    overflow: hidden;
+}
+
+
+.box:not(.scrollMode){
+    .nav-tabs { transform: translateX(0) !important; }
+}
+.box.scrollMode {
+    display: flex;
+    .tab-arrow { display: block; }
+    .nav-tabs { width: 650px; }
+}
+
+@media (max-width: 1320px) {
+
+}

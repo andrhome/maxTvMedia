@@ -1,0 +1,32 @@
+<div class="row m-b-xs" (dblclick)="editModeOn()">
+    <div *ngIf="title" class="dv-label col-sm-3 strong" data-toggle="tooltip" data-placement="top"
+         [title]="tooltipText">
+        {{ title }}
+    </div>
+
+    <div *ngIf="!editOnly" class="dv-value col-sm-9"
+         [ngClass]="{'hidden': isEditMode, 'col-sm-9': title, 'col-sm-12': !title}">
+        <i *ngIf="value == 1" class="icon-check"></i>
+        <i *ngIf="value == 0" class="icon-close"></i>
+
+        <span *ngIf="valueTitle" class="signedLabel">{{ valueTitle }}</span>
+
+        <i class="fa fa-pencil pull-right" (click)="editModeOn()"
+           data-toggle="tooltip" data-placement="top" title="Edit"></i>
+    </div>
+
+    <div class="dv-value-edit col-sm-9" [ngClass]="{'hidden': !isEditMode, 'col-sm-9': title, 'col-sm-12': !title}">
+        <select (keyup.enter)="apply()" class="form-control" [(ngModel)]="value">
+            <option [value]="1">Yes</option>
+            <option [value]="0">No</option>
+        </select>
+
+        <button *ngIf="!editOnly" type="button" (click)="apply()">
+            <i class="fa fa-check"></i>
+        </button>
+
+        <button *ngIf="!editOnly" type="button" (click)="cancel()">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+</div>

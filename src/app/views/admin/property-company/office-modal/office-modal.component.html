@@ -1,0 +1,57 @@
+<div class="modal inmodal fade in" [ngClass]="{'show': showModal}">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" [ngClass]="{'ng-submitted': form.submitted}" autocomplete="off">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <h4 class="modal-title col-sm-8">New Office</h4>
+                        <div class="input-group-btn pull-right">
+                            <button class="btn btn-primary submit"
+                                    type="submit" [disabled]="disabledSubmit">Save</button>
+                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button"
+                                    aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a (click)="hideModal()">Cancel</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row m-b-sm">
+                        <div class="col-md-4">
+                            <label class="theme-name-label">Office Name</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" name="name" [ngModel]="data.name" maxlength="255" required>
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-md-4">
+                            <label class="theme-name-label">Phone</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" name="phone" [ngModel]="data.phone" maxlength="255">
+                        </div>
+                    </div>
+                    <p class="strong">Members</p>
+                    <div class="row m-b-sm" *ngFor="let m of data.members; let i = index;">
+                        <div class="col-md-6">
+                            <input class="form-control" placeholder="Name" required
+                                   name="m.name[{{i}}]" [(ngModel)]="m.name" maxlength="255">
+                        </div>
+                        <div class="col-md-6">
+                            <input class="form-control" placeholder="Phone" required
+                                   name="m.phone[{{i}}]" [(ngModel)]="m.phone" maxlength="255">
+                        </div>
+                    </div>
+                    <div class="clearfix m-b-sm">
+                        <i class="icon-plus pull-right" (click)="addNewMember()" title="Add New Member"></i>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-backdrop fade in" (click)="hideModal()"></div>
+</div>
+

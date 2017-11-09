@@ -1,0 +1,71 @@
+<div class="modal inmodal fade in" [ngClass]="{'show': showModal}">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" [ngClass]="{'ng-submitted': form.submitted}" autocomplete="off">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <h4 class="modal-title col-sm-8">New Management Company</h4>
+                        <div class="input-group-btn pull-right">
+                            <button class="btn btn-primary submit"
+                                    type="submit" [disabled]="disabledSubmit">Save</button>
+                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button"
+                                    aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a (click)="hideModal()">Cancel</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="row m-b-sm">
+                        <div class="col-md-4">
+                            <label class="theme-name-label">Company Name</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" name="name" ngModel maxlength="255" required>
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-md-4">
+                            <label class="theme-name-label">Email</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" name="email" ngModel maxlength="255" required>
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-md-4">
+                            <label class="theme-name-label">Address</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" name="address" ngModel maxlength="255" required>
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-md-4">
+                            <label class="theme-name-label">Phone</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" name="phone" ngModel maxlength="255" required>
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-md-4">
+                            <label class="theme-name-label">Theme</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-control" name="theme" ngModel>
+                                <option value="" hidden></option>
+                                <option *ngFor="let item of adm.allThemes" [value]="item.id">
+                                    {{item.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-backdrop fade in" (click)="hideModal()"></div>
+</div>
+

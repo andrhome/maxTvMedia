@@ -1,0 +1,41 @@
+.mtv-directory-page{
+
+    .table-responsive {
+        overflow: auto;
+        height: calc(100vh - 345px);
+    }
+
+    td.with-icon {
+        padding: 5px;
+    }
+
+    .directory-list-table {
+        margin-bottom: 0;
+        th {
+            white-space: nowrap;
+            cursor: pointer;
+            i:before {
+                padding: 10px;
+                top: -3px;
+                position: relative;
+            }
+        }
+        tbody tr {
+            cursor: pointer;
+        }
+        tr {
+            .label {
+                text-transform: capitalize;
+                font-weight: bold;
+            }
+            .contact-type {
+                span {
+                    color: $text-color;
+                }
+            }
+        }
+        td {
+            vertical-align: middle;
+        }
+    }
+}

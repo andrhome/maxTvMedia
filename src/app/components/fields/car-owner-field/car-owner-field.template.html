@@ -1,0 +1,32 @@
+<div class="row m-b-xs" (dblclick)="editModeOn()">
+    <div *ngIf="title" class="dv-label col-sm-3 strong" data-toggle="tooltip" data-placement="top"
+         [title]="tooltipText">
+        {{ title }}
+    </div>
+
+    <div *ngIf="!editOnly" class="dv-value col-sm-12" [ngClass]="{'hidden': isEditMode, 'col-sm-9': title, 'col-sm-12': !title}">
+
+        <span [class]="valueClass">{{ getValueById(value) || '-' }}</span>
+
+        <i (click)="editModeOn()" class="fa fa-pencil pull-right" data-toggle="tooltip" data-placement="top" title="Edit"></i>
+    </div>
+
+    <div class="dv-value-edit" [ngClass]="{'hidden': !isEditMode, 'col-sm-9': title, 'col-sm-12': !title}">
+        <select class="form-control" [(ngModel)]="value">
+            <option [ngValue]="0">Other</option>
+            <option *ngFor="let item of ownersList" [ngValue]="item.id">{{ item[optionTitleKey] }}</option>
+        </select>
+
+        <button *ngIf="!editOnly" (click)="apply()" type="button">
+            <i class="fa fa-check"></i>
+        </button>
+
+        <button *ngIf="!editOnly" (click)="cancel()" type="button">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+
+    <div class="dv-value-edit" [ngClass]="{'hidden': !isEditMode, 'col-sm-9 col-sm-offset-3': title, 'col-sm-12': !title}">
+        <input (keyup.enter)="apply()" *ngIf="value === 0" [(ngModel)]="ownerName" class="form-control" placeholder="Car Owner">
+    </div>
+</div>

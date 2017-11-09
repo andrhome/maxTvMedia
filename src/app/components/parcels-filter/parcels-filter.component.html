@@ -1,0 +1,56 @@
+<div class="col-sm-2 parcels-filter">
+    <div class="parcels-filter_view-part" (click)="showDropdown = !showDropdown">Filter</div>
+    <div class="parcels-filter_dropdown" [hidden]="!showDropdown">
+        
+        <div class="m-b-xs filter-checkbox">
+            <label class="img-checkbox">
+                <input type="checkbox" id="incomingCheckbox" #incomingCheckbox (change)="changeFilter()">
+                <label for="incomingCheckbox"><svg-checked></svg-checked></label>
+                <span>Incoming</span>
+            </label>
+        </div>
+
+        <div class="m-b-xs filter-checkbox">
+            <label class="img-checkbox">
+                <input type="checkbox" id="outgoingCheckbox" #outgoingCheckbox (change)="changeFilter()">
+                <label for="outgoingCheckbox"><svg-checked></svg-checked></label>
+                <span>Outgoing</span>
+            </label>
+        </div>
+
+        <hr>
+
+        <div class="m-b-xs filter-checkbox">
+            <label class="img-checkbox">
+                <input type="checkbox" id="pickedUpCheckbox" #pickedUpCheckbox (change)="changeFilter()">
+                <label for="pickedUpCheckbox"><svg-checked></svg-checked></label>
+                <span>Picked Up</span>
+            </label>
+        </div>
+
+        <div class="m-b-xs filter-checkbox">
+            <label class="img-checkbox">
+                <input type="checkbox" id="receivedCheckbox" #receivedCheckbox (change)="changeFilter()">
+                <label for="receivedCheckbox"><svg-checked></svg-checked></label>
+                <span>Received</span>
+            </label>
+        </div>
+
+        <div class="m-b-xs filter-checkbox">
+            <label class="img-checkbox">
+                <input type="checkbox" id="returnedCheckbox" #returnedCheckbox (change)="changeFilter()">
+                <label for="returnedCheckbox"><svg-checked></svg-checked></label>
+                <span>Returned</span>
+            </label>
+        </div>
+
+        <div class="m-b-xs filter-checkbox">
+            <label class="img-checkbox">
+                <input type="checkbox" id="canceledCheckbox" #canceledCheckbox (change)="changeFilter()">
+                <label for="canceledCheckbox"><svg-checked></svg-checked></label>
+                <span>Canceled</span>
+            </label>
+        </div>
+        
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="ss_view-part" (click)="toggleDropdown(searchInput)" [class.disabled]="!data.length">{{selectedText}}</div>
+
+<div class="ss_dropdown" [hidden]="!showDropdown">
+    <input class="ss_search-input" [(ngModel)]="searchStr" (ngModelChange)="filteredData()" #searchInput
+           (keydown.ArrowUp)="onKeydownArrowUp()"
+           (keydown.ArrowDown)="onKeydownArrowDown()"
+           (keydown.enter)="onKeydownEnter($event)"
+    >
+    <ul>
+        <li *ngFor="let item of filteredDataArray; let i = index;"
+            (click)="select(item)"
+            (mouseenter)="focusIndex = i"
+            [ngClass]="{'focus': i == focusIndex}"
+        >{{item.optionText}}</li>
+        <li *ngIf="filteredDataArray.length === 0">No results match "{{searchStr}}"</li>
+    </ul>
+</div>
+
+<div class="ss_arrow" (click)="toggleDropdown(searchInput)">▼</div>

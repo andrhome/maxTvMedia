@@ -1,0 +1,37 @@
+.sidebar-collapse {
+
+}
+
+.navbar-static-side {
+    background: #fff;
+}
+
+.profile-element {
+    position: absolute;
+    bottom: 20px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    img { width: 35px; height: 35px; }
+}
+
+.nav > li.active {
+    background: #fff;
+    color: #000;
+}
+
+.nav > li > a {
+    color: #96989a;
+    font-weight: 600;
+    padding: 20px 20px 20px 25px;
+    border-bottom: 1px solid #dadada;
+    font-size: 16px;
+}
+
+.logo-box {
+    padding: 20px;
+}
+.logo {
+    height: 100px;
+    background: #fff url(/assets/img/logo-maxtv-login.png) center center / contain no-repeat;
+}

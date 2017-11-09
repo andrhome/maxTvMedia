@@ -1,0 +1,241 @@
+<div class="ibox detailed-view-ibox" *ngIf="directoryService.showDetailedView && data">
+    <div class="detailed-view-header">
+        <a *ngIf="data.suiteNumber" [routerLink]="['/directory/item/' + data.id + '/info']">
+			<span class="suite-name m-r-sm mtv-primary-color">{{data.suiteNumber}}</span>
+        </a>
+        <span class="building-name">{{data.buildingName || 'Create' + title}}</span>
+        <span class="close-detailed-view" (click)="directoryService.toggleDetailedView(null, false)">×</span>
+    </div>
+    <div class="detailed-view-body">
+        <form #form="ngForm" [ngClass]="{'ng-submitted': form.submitted}">
+            <input type="hidden" name="id" [ngModel]="data.id">
+
+            <!--** Building ** -->
+            <div class="row m-b-xs m-t-md" (dblclick)="setEditModeFor(data, 'building', true)">
+                <div class="dv-label col-sm-4 strong">Building</div>
+                <div class="dv-value col-sm-8" *ngIf="!data.formFields.building.editMode">
+                    <span>{{data.buildingName || '-'}}</span>
+                    <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'building', true)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                </div>
+                <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.building.editMode">
+                    <select class="form-control" name="building" [ngModel]="data.building" required>
+                        <option value="" hidden></option>
+                        <option *ngFor="let build of directoryService.buildings"
+                                [value]="build.id">{{build.name}}
+                        </option>
+                    </select>
+                    <button type="button" (click)="applyChanges(data, form, 'building')"   ><i class="fa fa-check"></i></button>
+                    <button type="button" (click)="setEditModeFor(data, 'building', false)"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+            <!--** SUITE NUMBER ** -->
+            <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'suiteNumber', true)">
+                <div class="dv-label col-sm-4 strong">Unit Number</div>
+                <div class="dv-value col-sm-8" *ngIf="!data.formFields.suiteNumber.editMode">
+                    <span>{{data.suiteNumber || '-'}}</span>
+                    <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'suiteNumber', true)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                </div>
+                <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.suiteNumber.editMode">
+                    <input class="form-control" name="suiteNumber" [ngModel]="data.suiteNumber" required maxlength="255"
+                           (keyup.enter)="applyChanges(data, form, 'suiteNumber')">
+                    <button type="button" (click)="applyChanges(data, form, 'suiteNumber')"   ><i class="fa fa-check"></i></button>
+                    <button type="button" (click)="setEditModeFor(data, 'suiteNumber', false)"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+            <!--** Emergency Contact ** -->
+            <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'emergencyContact', true)">
+                <div class="dv-label col-sm-4 strong">Emergency Contact</div>
+                <div class="dv-value col-sm-8" *ngIf="!data.formFields.emergencyContact.editMode">
+                    <span>{{data.emergencyContact || '-'}}</span>
+                    <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'emergencyContact', true)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                </div>
+                <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.emergencyContact.editMode">
+                    <input class="form-control" name="emergencyContact" [ngModel]="data.emergencyContact" maxlength="255"
+                           (keyup.enter)="applyChanges(data, form, 'emergencyContact')">
+                    <button type="button" (click)="applyChanges(data, form, 'emergencyContact')"   ><i class="fa fa-check"></i></button>
+                    <button type="button" (click)="setEditModeFor(data, 'emergencyContact', false)"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+            <!--** Prop. Share %: ** -->
+            <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'proportionateShare', true)">
+                <div class="dv-label col-sm-4 strong">Prop. Share %</div>
+                <div class="dv-value col-sm-8" *ngIf="!data.formFields.proportionateShare.editMode">
+                    <span>{{data.proportionateShare || '-'}}</span>
+                    <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'proportionateShare', true)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                </div>
+                <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.proportionateShare.editMode">
+                    <input class="form-control" name="proportionateShare" [ngModel]="data.proportionateShare" maxlength="255"
+                           (keyup.enter)="applyChanges(data, form, 'proportionateShare')">
+                    <button type="button" (click)="applyChanges(data, form, 'proportionateShare')"   ><i class="fa fa-check"></i></button>
+                    <button type="button" (click)="setEditModeFor(data, 'proportionateShare', false)"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+            <!--** OCCUPANCY DATE ** -->
+            <datetime-field
+                ngModel
+                name="occupancyDate"
+                [title]="'Occupancy Date'"
+                [value]="data.occupancyDate"
+                (update)="applyChanges(data, form, 'occupancyDate')">
+            </datetime-field>
+
+            <!--** Buzz ** -->
+            <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'buzz', true)">
+                <div class="dv-label col-sm-4 strong">Buzz</div>
+                <div class="dv-value col-sm-8" *ngIf="!data.formFields.buzz.editMode">
+                    <span>{{data.buzz || '-'}}</span>
+                    <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'buzz', true)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                </div>
+                <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.buzz.editMode">
+                    <input class="form-control" name="buzz" [ngModel]="data.buzz" maxlength="255"
+                           (keyup.enter)="applyChanges(data, form, 'buzz')">
+                    <button type="button" (click)="applyChanges(data, form, 'buzz')"   ><i class="fa fa-check"></i></button>
+                    <button type="button" (click)="setEditModeFor(data, 'buzz', false)"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+            <!--** keyCode ** -->
+            <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'keyCode', true)">
+                <div class="dv-label col-sm-4 strong">Key Code</div>
+                <div class="dv-value col-sm-8" *ngIf="!data.formFields.keyCode.editMode">
+                    <span>{{data.keyCode || '-'}}</span>
+                    <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'keyCode', true)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                </div>
+                <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.keyCode.editMode">
+                    <input class="form-control" name="keyCode" [ngModel]="data.keyCode" maxlength="255"
+                           (keyup.enter)="applyChanges(data, form, 'keyCode')">
+                    <button type="button" (click)="applyChanges(data, form, 'keyCode')"   ><i class="fa fa-check"></i></button>
+                    <button type="button" (click)="setEditModeFor(data, 'keyCode', false)"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+            <!--** keyFob ** -->
+            <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'keyFob', true)">
+                <div class="dv-label col-sm-4 strong">Key Fob</div>
+                <div class="dv-value col-sm-8" *ngIf="!data.formFields.keyFob.editMode">
+                    <span>{{data.keyFob || '-'}}</span>
+                    <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'keyFob', true)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                </div>
+                <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.keyFob.editMode">
+                    <input class="form-control" name="keyFob" [ngModel]="data.keyFob" maxlength="255"
+                           (keyup.enter)="applyChanges(data, form, 'keyFob')">
+                    <button type="button" (click)="applyChanges(data, form, 'keyFob')"   ><i class="fa fa-check"></i></button>
+                    <button type="button" (click)="setEditModeFor(data, 'keyFob', false)"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+            <!--** POWER_ATTORNEY ** -->
+            <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'powerAttorney', true)">
+                <div class="dv-label col-sm-4 strong">Power Attorney</div>
+                <div class="dv-value col-sm-8" *ngIf="!data.formFields.powerAttorney.editMode">
+                    <span>{{data.powerAttorney || '-'}}</span>
+                    <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'powerAttorney', true)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                </div>
+                <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.powerAttorney.editMode">
+                    <input class="form-control" name="powerAttorney" [ngModel]="data.powerAttorney" maxlength="255"
+                           (keyup.enter)="applyChanges(data, form, 'powerAttorney')">
+                    <button type="button" (click)="applyChanges(data, form, 'powerAttorney')"   ><i class="fa fa-check"></i></button>
+                    <button type="button" (click)="setEditModeFor(data, 'powerAttorney', false)"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+            <!--** legalDescription ** -->
+            <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'legalDescription', true)">
+                <div class="dv-label col-sm-4 strong">Legal Description</div>
+                <div class="dv-value col-sm-8" *ngIf="!data.formFields.legalDescription.editMode">
+                    <span>{{data.legalDescription || '-'}}</span>
+                    <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'legalDescription', true)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                </div>
+                <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.legalDescription.editMode">
+                    <input class="form-control" name="legalDescription" [ngModel]="data.legalDescription" maxlength="255"
+                           (keyup.enter)="applyChanges(data, form, 'legalDescription')">
+                    <button type="button" (click)="applyChanges(data, form, 'legalDescription')"   ><i class="fa fa-check"></i></button>
+                    <button type="button" (click)="setEditModeFor(data, 'legalDescription', false)"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+            <!--** rentedOut ** -->
+            <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'rentedOut', true)">
+                <div class="dv-label col-sm-4 strong">Rented Out</div>
+                <div class="dv-value col-sm-8" *ngIf="!data.formFields.rentedOut.editMode">
+                    <i *ngIf="data.rentedOut == 1" class="icon-check"></i>
+                    <i *ngIf="data.rentedOut == 0" class="icon-close"></i>
+                    <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'rentedOut', true)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                </div>
+                <div class="dv-value-edit col-sm-8" *ngIf="data.formFields.rentedOut.editMode">
+                    <select class="form-control" name="rentedOut" [ngModel]="data.rentedOut">
+                        <option [value]="1">Yes</option>
+                        <option [value]="0">No</option>
+                    </select>
+                    <button type="button" (click)="applyChanges(data, form, 'rentedOut')"   ><i class="fa fa-check"></i></button>
+                    <button type="button" (click)="setEditModeFor(data, 'rentedOut', false)"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+
+            <!--** note ** -->
+            <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'note', true)">
+                <div class="dv-label col-sm-4 strong">Notes</div>
+                <div class="dv-value col-sm-8" *ngIf="!data.formFields.note.editMode">
+                    <span>{{data.note || '-'}}</span>
+                    <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'note', true)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                </div>
+                <div class="dv-value col-sm-8" *ngIf="data.formFields.note.editMode">
+                    <textarea class="form-control" name="note" [ngModel]="data.note" maxlength="255"
+                              (keyup.enter)="applyChanges(data, form, 'note')">{{data.note}}</textarea>
+                    <div class="m-t-xs apart-btns pull-right">
+                        <button type="button" class="apply" (click)="applyChanges(data, form, 'note')"><i class="fa fa-check"></i></button>
+                        <button type="button" class="reset" (click)="setEditModeFor(data, 'note', false)"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!--** allowedVisitor ** -->
+            <div class="row m-b-xs" (dblclick)="setEditModeFor(data, 'allowedVisitor', true)">
+                <div class="dv-label col-sm-4 strong">Allowed Visitors</div>
+                <div class="dv-value col-sm-8" *ngIf="!data.formFields.allowedVisitor.editMode">
+                    <span>{{data.allowedVisitor || '-'}}</span>
+                    <i class="fa fa-pencil pull-right" (click)="setEditModeFor(data, 'allowedVisitor', true)"
+                       data-toggle="tooltip" data-placement="top" title="Edit"></i>
+                </div>
+                <div class="dv-value col-sm-8" *ngIf="data.formFields.allowedVisitor.editMode">
+                    <textarea class="form-control" name="allowedVisitor" [ngModel]="data.allowedVisitor" maxlength="255"
+                              (keyup.enter)="applyChanges(data, form, 'allowedVisitor')">{{data.allowedVisitor}}</textarea>
+                    <div class="m-t-xs apart-btns pull-right">
+                        <button type="button" class="apply" (click)="applyChanges(data, form, 'allowedVisitor')"><i class="fa fa-check"></i></button>
+                        <button type="button" class="reset" (click)="setEditModeFor(data, 'allowedVisitor', false)"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <a data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle m-t-sm m-b-sm">
+                    Actions <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li (click)="remove(data.id)"><a href="#">Delete This {{title}}</a></li>
+                </ul>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+

@@ -1,0 +1,32 @@
+.recipients-field {
+    cursor: pointer;
+    padding: 5px 5px 0;
+    height: auto;
+    min-height: 35px;
+
+    &.inViewModal {
+        cursor: default;
+        padding: 0;
+        border: none;
+
+        .remove-recipients-block { display: none; }
+    }
+}
+
+.recipients-block {
+    display: inline-block;
+    border-radius: 5px;
+    background: #ddd;
+    padding: 3px 10px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.remove-recipients-block {
+    font-size: 24px;
+    line-height: 24px;
+    vertical-align: middle;
+    cursor: pointer;
+    &:hover { color: #000; }
+
+}

@@ -1,0 +1,287 @@
+<div class="modal inmodal fade in choice-recipients-modal" [class.show]="showModal">
+    <div class="modal-dialog " [ngClass]="{'loading': es.spinnerShow, 'sk-loading': es.spinnerShow}">
+        <div class="modal-content">
+            <button *ngIf="!es.spinnerShow"  type="button" class="close" (click)="hideModal()">
+                <span>×</span><span class="sr-only">Close</span>
+            </button>
+            <div class="flex">
+                <div class="left-part col-sm-4">
+                    <div class="title">Email List</div>
+                    <div class="filters-box">
+                        <div class="filter m-b-sm" *ngFor="let item of filter.filters; let i = index;">
+
+                            <div class="img-checkbox building-checkbox">
+                                <input type="checkbox" [disabled]="item.disabled" id="building-{{i}}"
+                                       [class.halfchecked]="item.isHalfCheckedClass('all')"
+                                       [checked]="item.isAllCheckboxChecked()"
+                                       (change)="item.checkedTargetResidents('all', $event.target.checked)"
+                                       (click)="item.toggleTargetList('all')">
+                                <label for="building-{{i}}">
+                                    <svg-checked></svg-checked>
+                                    <svg-halfchecked></svg-halfchecked>
+                                </label>
+                                <label class="checkbox-label" [class.active]="item.isAllInBuildingShow()"
+                                       (click)="item.isAllInBuildingShow() ? item.unselectTargetList('all') : item.toggleTargetList('all')">
+                                    <span>{{item.buildingName}}</span>
+                                    <i class="fa {{item.showDropdown ? 'fa-chevron-up' : 'fa-chevron-down'}}"
+                                       (click)="item.showDropdown = !item.showDropdown; $event.preventDefault();"
+                                    ></i>
+                                </label>
+                            </div>
+
+                            <div class="filter-dropdown" *ngIf="item.showDropdown">
+
+                                <div class="clearfix">
+                                    <div class="col-sm-8">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" [disabled]="item.disabled" id="b-{{i}}-residents"
+                                                   [checked]="item.tenantsChecked && item.ownerOnChecked"
+                                                   (change)="item.checkedTargetResidents('residents', $event.target.checked)"
+                                                   [class.halfchecked]="item.isHalfCheckedClass('residents')"
+                                                   (click)="item.toggleTargetList('residents')">
+                                            <label for="b-{{i}}-residents">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                            </label>
+                                            <label class="checkbox-label"
+                                                   [class.active]="item.tenantsShow && item.ownerOnShow"
+                                                   (click)="item.tenantsShow && item.ownerOnShow ? item.unselectTargetList('residents') : item.toggleTargetList('residents')"
+                                            >Residents</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix filter__item">
+                                    <div class="col-sm-8 pl-for-residents">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" [disabled]="item.disabled" id="b-{{i}}-tenants"
+                                                   [class.halfchecked]="item.isHalfCheckedClass('rent')"
+                                                   [(ngModel)]="item.tenantsChecked"
+                                                   (change)="item.checkedTargetResidents('rent', $event.target.checked)"
+                                                   (click)="item.toggleTargetList('tenantsShow')">
+                                            <label for="b-{{i}}-tenants">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                            </label>
+                                            <label class="checkbox-label" [class.active]="item.tenantsShow"
+                                                   (click)="item.tenantsShow ? item.unselectTargetList('tenantsShow') : item.toggleTargetList('tenantsShow')"
+                                            >Tenants</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <span>
+                                            {{item.getUsersCheckedCount('rent')}}
+                                            /
+                                            {{item.getUsersCount('rent')}}
+                                            /
+                                            {{ item.getUsersCountWithoutEmail('rent') }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix filter__item">
+                                    <div class="col-sm-8 pl-for-residents">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" [disabled]="item.disabled" id="b-{{i}}-owner-on"
+                                                   [class.halfchecked]="item.isHalfCheckedClass('owner_on')"
+                                                   [(ngModel)]="item.ownerOnChecked"
+                                                   (change)="item.checkedTargetResidents('owner_on', $event.target.checked)"
+                                                   (click)="item.toggleTargetList('ownerOnShow')">
+                                            <label for="b-{{i}}-owner-on">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                            </label>
+                                            <label class="checkbox-label" [class.active]="item.ownerOnShow"
+                                                   (click)="item.ownerOnShow ? item.unselectTargetList('ownerOnShow') : item.toggleTargetList('ownerOnShow')"
+                                            >Owners (On-Site)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <span>
+                                            {{item.getUsersCheckedCount('owner_on')}}
+                                            /
+                                            {{item.getUsersCount('owner_on')}}
+                                            /
+                                            {{ item.getUsersCountWithoutEmail('owner_on') }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix filter__item">
+                                    <div class="col-sm-8">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" [disabled]="item.disabled" id="b-{{i}}-owner-off"
+                                                   [class.halfchecked]="item.isHalfCheckedClass('owner_off')"
+                                                   [(ngModel)]="item.ownerOffChecked"
+                                                   (change)="item.checkedTargetResidents('owner_off', $event.target.checked)"
+                                                   (click)="item.toggleTargetList('ownerOffShow')">
+                                            <label for="b-{{i}}-owner-off">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                            </label>
+                                            <label class="checkbox-label" [class.active]="item.ownerOffShow"
+                                                   (click)="item.ownerOffShow ? item.unselectTargetList('ownerOffShow') : item.toggleTargetList('ownerOffShow')"
+                                            >Owners (Off-Site)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <span>
+                                            {{item.getUsersCheckedCount('owner_off')}}
+                                            /
+                                            {{item.getUsersCount('owner_off')}}
+                                            /
+                                            {{ item.getUsersCountWithoutEmail('owner_off') }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix filter__item">
+                                    <div class="col-sm-8">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" [disabled]="item.disabled" id="b-{{i}}-not-set"
+                                                   [class.halfchecked]="item.isHalfCheckedClass('unknown')"
+                                                   [(ngModel)]="item.notSetChecked"
+                                                   (change)="item.checkedTargetResidents('unknown', $event.target.checked)"
+                                                   (click)="item.toggleTargetList('notSetShow')">
+                                            <label for="b-{{i}}-not-set">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                            </label>
+                                            <label class="checkbox-label" [class.active]="item.notSetShow"
+                                                   (click)="item.notSetShow ? item.unselectTargetList('notSetShow') : item.toggleTargetList('notSetShow')"
+                                            >Not Set</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <span>
+                                            {{item.getUsersCheckedCount('unknown')}}
+                                            /
+                                            {{item.getUsersCount('unknown')}}
+                                            /
+                                            {{ item.getUsersCountWithoutEmail('unknown') }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="clearfix filter__item" *ngFor="let group of item.groups; let i_g = index;">
+                                    <div class="col-sm-8">
+                                        <div class="img-checkbox">
+                                            <input type="checkbox" [disabled]="item.disabled" id="b-{{i}}-group-{{i_g}}"
+                                                   [class.halfchecked]="item.isHalfCheckedClass('group', group.name)"
+                                                   [(ngModel)]="group.checked"
+                                                   (change)="item.checkedTargetResidents('group', $event.target.checked, group.name)"
+                                                   (click)="item.toggleTargetList('group', group.name)">
+                                            <label for="b-{{i}}-group-{{i_g}}">
+                                                <svg-checked></svg-checked>
+                                                <svg-halfchecked></svg-halfchecked>
+                                            </label>
+                                            <label class="checkbox-label" [class.active]="group.show"
+                                                   (click)="group.show ? item.unselectTargetList('group', group.name) : item.toggleTargetList('group', group.name)"
+                                            >{{group.name}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 text-right">
+                                        <span>
+                                            {{item.getUserCheckedInGroupCount(group.name)}}
+                                            /
+                                            {{item.getUserInGroupCount(group.name)}}
+                                            /
+                                            {{ item.getUsersCountWithoutEmail(group.name) }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right-part col-sm-8">
+                    <div class="head">
+                        <div class="search-box">
+                            <input [(ngModel)]="filter.searchStr" placeholder="Search">
+                            <i class="fa fa-search" *ngIf="!filter.searchStr"></i>
+                            <i class="fa fa-times" *ngIf="filter.searchStr" (click)="filter.searchStr = ''"></i>
+                        </div>
+                        <div class="box-with-checkbox">
+                            <label class="img-checkbox show-selected__label" *ngIf="filter.selectedCount() > 0">
+                                <input type="checkbox" id="show-selected" [(ngModel)]="filter.showSelected">
+                                <label for="show-selected">
+                                    <svg-checked></svg-checked>
+                                    <span>Show selected  ({{filter.selectedCount()}})</span>
+                                </label>
+                            </label>
+                            <div class="clickable-text mtv-primary-color" *ngIf="filter.selectedCount() > 0"
+                                 (click)="filter.uncheckedAllResidents()">Clear selected
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-box">
+                        <table class="table table-striped table-hover" *ngIf="filter.filterResidents().length">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <div class="img-checkbox"
+                                         (click)="filter.toggleCheckedAll(); filter.updateCheckboxState()">
+                                        <input type="checkbox" id="selected-all" [checked]="filter.isCheckedAll()">
+                                        <label for="selected-all" (click)="$event.preventDefault();">
+                                            <svg-checked></svg-checked>
+                                            <svg-halfchecked></svg-halfchecked>
+                                        </label>
+                                    </div>
+                                </th>
+                                <th>Unit</th>
+                                <th>Building</th>
+                                <th>Resident</th>
+                                <th>Type</th>
+                                <th>Email</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let item of filter.filterResidents(); let i = index;"
+                                (click)="item.checked = !item.checked; filter.updateCheckboxState()">
+                                <td>
+                                    <div class="img-checkbox">
+                                        <input type="checkbox" id="resident-{{i}}" [checked]="item.checked">
+                                        <label for="resident-{{i}}" (click)="$event.preventDefault();">
+                                            <svg-checked></svg-checked>
+                                            <svg-halfchecked></svg-halfchecked>
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>{{item.suiteNumber}}</td>
+                                <td>{{item.buildingName}}</td>
+                                <td>{{item.fullName}}</td>
+                                <td>
+                                    <span *ngIf="item.role=='owner_off'">Owner Off-Site</span>
+                                    <span *ngIf="item.role=='owner_on'">Owner On-Site</span>
+                                    <span *ngIf="item.role=='rent'">Tenant</span>
+                                    <span *ngIf="item.role=='unknown'">Not Set</span>
+                                </td>
+                                <td>{{item.email}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="foot">
+                <div class="img-checkbox">
+                    <input type="checkbox" id="ignore-settings" [(ngModel)]="filter.ignoreWaiverSettings">
+                    <label for="ignore-settings">
+                        <svg-checked></svg-checked>
+                        <svg-halfchecked></svg-halfchecked>
+                        <span>Ignore email waiver settings</span>
+                    </label>
+                </div>
+                <button class="btn btn-primary m-l-xl" [disabled]="!filter.isSomeChecked()" (click)="saveRecipients()">
+                    Save
+                </button>
+            </div>
+        </div>
+
+        <spinner [spinnerShow]="es.spinnerShow"></spinner>
+    </div>
+    <div class="modal-backdrop fade in" (click)="!es.spinnerShow && hideModal()"></div>
+</div>

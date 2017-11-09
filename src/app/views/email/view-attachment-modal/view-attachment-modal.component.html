@@ -1,0 +1,15 @@
+<div class="modal inmodal fade in view-attachment-modal" [ngClass]="{'show': showModal}">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+
+            <h3>{{data.name}}</h3>
+
+            <button type="button" class="close" (click)="hideModal()">
+                <span>×</span><span class="sr-only">Close</span>
+            </button>
+
+            <img *ngIf="data.isImage()" [src]="data.path">
+        </div>
+    </div>
+    <div class="modal-backdrop fade in" (click)="hideModal()"></div>
+</div>

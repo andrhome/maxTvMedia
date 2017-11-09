@@ -1,0 +1,168 @@
+<div class="ibox detailed-view-ibox">
+    <div class="detailed-view-header">
+        <div class="col-sm-9">
+            <span>Resident</span>
+        </div>
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-w-m btn-primary pull-right" (click)="create()">
+                <i class="fa fa-plus-circle"></i> Add Resident
+            </button>
+        </div>
+    </div>
+
+    <div class="detailed-view-body">
+        <div class="detailed-view__more-info m-t-md">
+            <form *ngIf="data"
+                  #form="ngForm"
+                  [ngClass]="{'ng-submitted': form.submitted}"
+                  autocomplete="off">
+                <!--  ** ROLE **  -->
+                <role-field
+                    [ngModel]="data.suiteUser[0].role"
+                    name="role"
+                    (update)="update({role: form.value.role})">
+                </role-field>
+
+                <!--  ** FULLNAME **  -->
+                <input-field
+                    [ngModel]="data.fullName"
+                    name="fullName"
+                    [required]="true"
+                    [class]="'strong full-name-field'"
+                    (update)="update({fullName: form.value.fullName});
+                    updateNameInList('residentsList', data.id, 'fullName',form.value.fullName)">
+                </input-field>
+
+                <!--  ** PRIMARY PHONE **  -->
+                <div *ngIf="getPrimaryPhone(phoneField.value)">
+                    <div class="row">
+                        <div class="dv-value col-sm-12">
+                            <i class="fa fa-phone  m-r-sm"> </i>
+                            <span> {{ getPrimaryPhone(phoneField.value) }} </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--  ** EMAIL **  -->
+                <resident-email-field
+                    [ngModel]="data.email"
+                    [value]="data.email"
+                    name="email"
+                    [icon]="'fa fa-envelope'"
+                    (update)="update({email: form.value.email})">
+                </resident-email-field>
+
+                <div class="btn-group" *ngIf="data.id">
+                    <a data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle">
+                        Actions <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a (click)="remove()">Move Out</a></li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <!--PHONES-->
+                <phone-field
+                    #phoneField
+                    [ngModel]="data.phones"
+                    name="phones"
+                    [userId]="data.id"
+                    (update)="update({phones: form.value.phones})"
+                    (reset)="resetPhones($event)">
+                </phone-field>
+
+                <hr>
+
+                <!--ADDRESS-->
+                <address-field
+                    [ngModel]="data.addresses"
+                    name="addresses"
+                    [value]="data.addresses"
+                    [userId]="data.id"
+                    (update)="update({addresses: form.value.addresses})"
+                    (reset)="resetAddress($event)">
+                </address-field>
+
+                <hr>
+
+                <!--  ** DATE OF BIRTH **  -->
+                <datetime-field
+                    name="dateOfBirth"
+                    [classLabel]="'dv-label col-sm-3 strong'"
+                    [title]="'DOB'"
+                    ngModel
+                    [value]="data.dateOfBirth"
+                    (update)="update({dateOfBirth: form.value.dateOfBirth})">
+                </datetime-field>
+
+                <hr>
+
+                <!--GROUPS-->
+                <groups-field
+                    name="groups"
+                    [ngModel]="data.groups"
+                    (update)="update({groups: form.value.groups})">
+                </groups-field>
+
+                <hr>
+
+                <!--  ** Waiver Signed **  -->
+                <boolean-field
+                    [ngModel]="data.emailWaiverSigned"
+                    name="emailWaiverSigned"
+                    [title]="'Waiver Signed'"
+                    [valueTitle]="'Emails'"
+                    (update)="update({emailWaiverSigned: form.value.emailWaiverSigned})">
+                </boolean-field>
+
+                <boolean-field
+                    [ngModel]="data.parcelWaiverSigned"
+                    name="parcelWaiverSigned"
+                    [title]="' '"
+                    [valueTitle]="'Parcels'"
+                    (update)="update({parcelWaiverSigned: form.value.parcelWaiverSigned})">
+                </boolean-field>
+
+                <boolean-field
+                    [ngModel]="data.keyWaiverSigned"
+                    name="keyWaiverSigned"
+                    [title]="' '"
+                    [valueTitle]="'Keys'"
+                    (update)="update({keyWaiverSigned: form.value.keyWaiverSigned})">
+                </boolean-field>
+
+                <hr>
+
+                <!--  ** EMERGENCY CONTACT **  -->
+                <input-field
+                    [ngModel]="data.emergencyContact"
+                    name="emergencyContact"
+                    [title]="'Emerg. Contact'"
+                    [tooltipText]="'Emergency Contact'"
+                    (update)="update({emergencyContact: form.value.emergencyContact})">
+                </input-field>
+
+                <!--  ** EMERGENCY ASSISTANT NOTES **  -->
+                <input-field
+                    [ngModel]="data.emergencyAssistantNotes"
+                    name="emergencyAssistantNotes"
+                    [title]="'Emerg. Notes'"
+                    [tooltipText]="'Emergency Assistant Notes'"
+                    (update)="update({emergencyAssistantNotes: form.value.emergencyAssistantNotes})">
+                </input-field>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="boxForModal" *ngIf="isCreateModal && parent.suiteData">
+    <resident-create
+        [closeTrigger]="hideModal"
+        (onPopupClose)="hideModal()"
+        [buildingId]="parent.suiteData.building.id"
+        [suiteId]="parent.suiteData.id"
+        [inDirectoryItemView]="true">
+    </resident-create>
+</div>

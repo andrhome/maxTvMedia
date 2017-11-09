@@ -1,0 +1,80 @@
+<div class="ibox detailed-view-ibox">
+    <div class="detailed-view-header">
+        <div class="col-sm-9"><span>Locker</span></div>
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-w-m btn-primary pull-right" (click)="create()">
+                <i class="fa fa-plus-circle"></i> Add Locker
+            </button>
+        </div>
+    </div>
+
+    <div class="detailed-view-body">
+        <div class="detailed-view__more-info m-t-md">
+            <form *ngIf="data"
+                  #form="ngForm"
+                  (ngSubmit)="update(form)"
+                  [ngClass]="{'ng-submitted': form.submitted}"
+                  autocomplete="off">
+
+                <input-field
+                    [ngModel]="data.lockerKeyCode"
+                    name="lockerKeyCode"
+                    [required]="true"
+                    [title]="'Locker Spot'"
+                    (update)="update({lockerKeyCode: form.value.lockerKeyCode});
+                    updateNameInList('lockersList', data.id, 'lockerKeyCode',form.value.lockerKeyCode)">
+                </input-field>
+
+                <input-field
+                    [ngModel]="data.legalDescription"
+                    name="legalDescription"
+                    [title]="'Legal Description'"
+                    (update)="update({legalDescription: form.value.legalDescription})">
+                </input-field>
+
+                <boolean-field
+                    [(ngModel)]="data.rentedOut"
+                    name="rentedOut"
+                    [title]="'Rented Out'"
+                    (update)="update({rentedOut: form.value.rentedOut}); resetRentedTo()">
+                </boolean-field>
+
+                <input-field
+                    *ngIf="data.rentedOut == 1"
+                    [ngModel]="data.rentedTo"
+                    name="rentedTo"
+                    [title]="'Rented To'"
+                    (update)="update({rentedTo: form.value.rentedTo})">
+                </input-field>
+
+                <textarea-field
+                    ngModel
+                    name="note"
+                    [title]="'Notes'"
+                    [value]="data.note"
+                    (update)="update({note: form.value.note})">
+                </textarea-field>
+
+                <div class="btn-group" *ngIf="data.id">
+                    <a data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle">
+                        Actions <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a (click)="remove()">Delete</a></li>
+                    </ul>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="boxForModal" *ngIf="isCreateModal && parent.suiteData">
+    <locker-create
+        [closeTrigger]="hideModal"
+        (onPopupClose)="hideModal()"
+        [buildingId]="parent.suiteData.building.id"
+        [suiteId]="parent.suiteData.id"
+        [inDirectoryItemView]="true"
+    ></locker-create>
+</div>

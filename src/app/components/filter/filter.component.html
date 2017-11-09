@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-lg-9 col-sm-7 search-col">
+        <div class="input-group">
+            <input [(ngModel)]="searchString" type="text" placeholder="Search for {{tabHeading}}"
+                   class="input form-control" (input)="searchOnInput()" (keyup.enter)="searchOnInput()"  maxlength="300">
+            <div class="input-group-btn">
+                <button *ngIf="searchString" (click)="clearSearch()"
+                        class="btn btn btn-default clear-search"><i class="fa fa-times"></i></button>
+                <div *ngIf="!searchString" class="btn btn btn-default bd-left-none"><i class="fa fa-search"></i></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 building-filter-col" *ngIf="buildings.length > 1">
+        <div class="filter_view-part" (click)="showDropdown = !showDropdown">{{getBuildingName(selectedBuilding)}}</div>
+        <ul class="filter_dropdown" [hidden]="!showDropdown">
+            <li class="m-b-xs" (click)="filterByBuilding(''); showDropdown = false;">All Buildings</li>
+            <li class="m-b-xs" *ngFor="let item of buildings"
+                (click)="filterByBuilding(item.id); showDropdown = false;">{{item.name}}</li>
+        </ul>
+    </div>
+</div>

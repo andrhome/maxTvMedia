@@ -1,0 +1,49 @@
+.documents-status-filter {
+    position: relative;
+    border: 1px solid #e5e6e7;
+    border-radius: 1px;
+    padding: 6px 0;
+    width: 14%;
+    margin-right: 2.66666667%;
+    font-size: 14px;
+
+    &:after {
+        content: '▼';
+        position: absolute;
+        font-size: 10px;
+        right: 5px;
+        top: 7px;
+    }
+    .parcels-filter_view-part {
+        cursor: pointer;
+        user-select: none;
+        z-index: 2;
+        position: relative;
+        padding: 0 12px;
+    }
+    .parcels-filter_dropdown {
+        position: absolute;
+        padding: 10px;
+        top: 103%;
+        left: 0;
+        width: 100%;
+        z-index: 10;
+        background: #fff;
+        box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+    }
+    hr {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    .filter-checkbox {
+        span {
+            vertical-align: middle;
+            user-select: none;
+            cursor: pointer;
+        }
+    }
+    label {
+        margin-bottom: 0;
+        font-weight: normal;
+    }
+}

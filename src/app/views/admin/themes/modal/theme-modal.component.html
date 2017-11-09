@@ -1,0 +1,94 @@
+<div class="modal inmodal fade in" [ngClass]="{'show': showModal}">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" [ngClass]="{'ng-submitted': form.submitted}" autocomplete="off">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <h4 class="modal-title col-sm-8">{{data.id ? 'Edit' : 'New'}} Theme</h4>
+                        <div class="input-group-btn pull-right">
+                            <button class="btn btn-primary submit"
+                                    type="submit" [disabled]="disabledSubmit">Save</button>
+                            <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button"
+                                    aria-expanded="false"><span class="caret"></span></button>
+                            <ul class="dropdown-menu pull-right">
+                                <li><a (click)="hideModal()">Cancel</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row m-b-sm">
+                        <div class="col-md-4">
+                            <label class="theme-name-label">Theme Name</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" name="name" [ngModel]="data.name" maxlength="255">
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-md-12">
+                            <label class="file-input btn btn-default">
+                                <input class="hidden" type="file" (change)="changeLogo($event, 'logo')" accept="image/jpeg, image/png">
+                                <span *ngIf="!data.logo && !spinnerShow.logo" class="file-input-label"><i class="fa fa-upload"></i> Upload Logo</span>
+                                <ng-template [ngIf]="data.logo">
+                                    <img class="logo-preview" [src]="data.logo">
+                                    <span class="file-input-remove" (click)="removeLogo($event, 'logo')"><i class="fa fa-trash"></i></span>
+                                </ng-template>
+                                <spinner [spinnerShow]="spinnerShow.logo"></spinner>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-md-12">
+                            <label class="file-input btn btn-default">
+                                <input class="hidden" type="file" (change)="changeLogo($event, 'miniLogo')" accept="image/jpeg, image/png">
+                                <span *ngIf="!data.miniLogo && !spinnerShow.miniLogo" class="file-input-label"><i class="fa fa-upload"></i> Upload Mini Logo</span>
+                                <ng-template [ngIf]="data.miniLogo">
+                                    <img class="logo-preview" [src]="data.miniLogo">
+                                    <span class="file-input-remove" (click)="removeLogo($event, 'miniLogo')"><i class="fa fa-trash"></i></span>
+                                </ng-template>
+                                <spinner [spinnerShow]="spinnerShow.miniLogo"></spinner>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-md-12">
+                            <div id="body-bg" class="input-group colorpicker-component">
+                                <input type="text" class="form-control hidden">
+                                <span class="input-group-addon"><i></i></span>
+                                <label class="colorpicker-label">Background color</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-md-12">
+                            <div id="primary-color" class="input-group colorpicker-component">
+                                <input type="text" class="form-control hidden">
+                                <span class="input-group-addon"><i></i></span>
+                                <label class="colorpicker-label">Primary color</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-md-12">
+                            <div id="primary-hover-color" class="input-group colorpicker-component">
+                                <input type="text" class="form-control hidden">
+                                <span class="input-group-addon"><i></i></span>
+                                <label class="colorpicker-label">Primary hover color</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="modal-backdrop fade in" (click)="hideModal()"></div>
+</div>
+

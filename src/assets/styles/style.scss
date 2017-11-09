@@ -1,0 +1,38 @@
+// Google Fonts
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
+
+// Variables, Mixins
+@import "imports/variables";
+
+// INSPINIA Theme Elements
+@import "imports/typography";
+@import "imports/navigation";
+@import "imports/top_navigation";
+@import "imports/buttons";
+@import "imports/badges_labels";
+@import "imports/elements";
+@import "imports/base";
+@import "imports/pages";
+@import "imports/metismenu";
+@import "imports/spinners";
+
+//// Media query style
+@import "imports/media";
+
+// Custom style
+@import "imports/custom";
+@import "imports/img-checkbox";
+
+@import "imports/modals";
+
+@import "imports/detailed-view";
+@import "imports/sweet-alert";
+@import "imports/create-modal";
+
+@import "../../app/views/directory-item/directory-item.style";
+@import "../../app/views/directory-item/activity/activity.style";
+
+@import "pages/directory";
+@import "pages/parcels";
+@import "pages/email-merge";
+@import "pages/themes";

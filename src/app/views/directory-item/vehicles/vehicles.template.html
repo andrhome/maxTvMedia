@@ -1,0 +1,100 @@
+<div class="ibox detailed-view-ibox">
+    <div class="detailed-view-header">
+        <div class="col-sm-9">
+            <span>Vehicle</span>
+        </div>
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-w-m btn-primary pull-right" (click)="create()">
+                <i class="fa fa-plus-circle"></i> Add Vehicle
+            </button>
+        </div>
+    </div>
+
+    <div class="detailed-view-body">
+        <div class="detailed-view__more-info m-t-md">
+            <form *ngIf="data"
+                  #form="ngForm"
+                  (ngSubmit)="update(form)"
+                  [ngClass]="{'ng-submitted': form.submitted}"
+                  autocomplete="off">
+
+                <car-owner-field
+                    [ngModel]="+data.owner?.id"
+                    name="owner"
+                    [title]="'Car Owner'"
+                    [optionTitleKey]="'fullName'"
+                    [suiteId]="data.suite"
+                    [ownerName]="data.ownerName"
+                    (update)="updateCarOwner(form)">
+                </car-owner-field>
+
+                <input-field
+                    [ngModel]="data.licensePlate"
+                    name="licensePlate"
+                    [required]="true"
+                    [title]="'License Plate #'"
+                    (update)="update({licensePlate: form.value.licensePlate});
+                    updateNameInList('vehicleList', data.id, 'licensePlate',form.value.licensePlate)">
+                </input-field>
+
+                <input-field
+                    name="brand"
+                    [title]="'Make'"
+                    [ngModel]="data.brand"
+                    (update)="update({brand: form.value.brand})">
+                </input-field>
+
+                <input-field
+                    [ngModel]="data.model"
+                    name="model"
+                    [title]="'Model'"
+                    (update)="update({model: form.value.model})">
+                </input-field>
+
+                <input-field
+                    [ngModel]="data.year"
+                    name="year"
+                    [title]="'Year'"
+                    (update)="update({year: form.value.year})">
+                </input-field>
+
+                <input-field
+                    [ngModel]="data.color"
+                    name="color"
+                    [title]="'Color'"
+                    (update)="update({color: form.value.color})">
+                </input-field>
+
+                <textarea-field
+                    ngModel
+                    name="note"
+                    [title]="'Notes'"
+                    [value]="data.note"
+                    (update)="update({note: form.value.note})">
+                </textarea-field>
+
+                <div class="btn-group" *ngIf="data.id">
+                    <a data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle">
+                        Actions <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a (click)="remove()">Delete</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="boxForModal" *ngIf="isCreateModal && parent.suiteData">
+    <vehicle-create
+        [closeTrigger]="hideModal"
+        (onPopupClose)="hideModal()"
+        [buildingId]="parent.suiteData.building.id"
+        [suiteId]="parent.suiteData.id"
+        [inDirectoryItemView]="true"
+    ></vehicle-create>
+</div>
